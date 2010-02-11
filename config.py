@@ -1,0 +1,5 @@
+
+# Urlenconder options
+DEFAULT_ALPHABET = '1qw2ert3yuio4pQWER5TYUIOP6asdfghj7klASDFG8HJKLzxcv9bnmZXCVBN0M'
+DEFAULT_BLOCK_SIZE = 22
+
