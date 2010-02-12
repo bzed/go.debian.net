@@ -1,7 +1,7 @@
 # Python Short URL Generator
 # Based on http://code.activestate.com/recipes/576918/
 # by Michael Fogleman
-from config import DEFAULT_ALPHABET, DEFAULT_BLOCK_SIZE
+from godebian.config import DEFAULT_ALPHABET, DEFAULT_BLOCK_SIZE
 
 class UrlEncoder(object):
     def __init__(self, alphabet=DEFAULT_ALPHABET, block_size=DEFAULT_BLOCK_SIZE):

@@ -1,4 +1,4 @@
-from routes import *
+from godebian.routes import *
 from bottle import run
 
 import sys
