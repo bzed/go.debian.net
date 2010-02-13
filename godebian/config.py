@@ -41,6 +41,11 @@ class UrlencoderConfig(ConfigSection):
 UrlencoderConfig.read('godebian.conf', 'urlencoder')
 
 class DatabaseConfig(ConfigSection):
-    connection = 'postgresql+psycopg2://user@password@host:port/dbname'
+    connection = 'postgresql:///godebian'
     debug = False
 DatabaseConfig.read('godebian.conf', 'database')
+
+class MemcachedConfig(ConfigSection):
+    servers = '127.0.0.1:11211'
+    timeout = 600
+MemcachedConfig.read('godebian.conf', 'memcached')
