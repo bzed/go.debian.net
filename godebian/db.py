@@ -29,36 +29,103 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, \
-                        Sequence
-from sqlalchemy.orm import mapper
+                        Sequence, Boolean, and_
+from sqlalchemy.orm import mapper, sessionmaker
+from sqlalchemy.exc import IntegrityError, DataError
 
 from .config import DatabaseConfig
 
 _engine = create_engine(DatabaseConfig.connection, echo=DatabaseConfig.debug)
 _metadata = MetaData()
 
-_urltable = Table('godebian_urls', _metadata,
-        Column('id', Integer, primary_key=True),
-        Column('url', String, index=True, unique=True, nullable=True),
-    )
-_static_urltable = Table('godebian_static_urls', _metadata,
-        Column('pk', Integer, primary_key=True),
-        Column('id', Integer, index=True, unique=True, nullable=False),
-        Column('url', String, index=True, unique=False, nullable=False),
-    )
+_URL_ID_TYPE = Integer
+if DatabaseConfig.connection.startswith('postgres'):
+    from sqlalchemy.databases.postgres import PGBigInteger
+    _URL_ID_TYPE = PGBigInteger
 
+_URL_TABLE = 'godebian_urls'
+_URL_ID_SEQ = 'url_id_seq'
+_urltable = Table(_URL_TABLE, _metadata,
+        Column('pk', Integer, primary_key=True),
+        Column('id', _URL_ID_TYPE, Sequence(_URL_ID_SEQ), index=True, unique=True, nullable=False),
+        Column('url', String, index=True, unique=False, nullable=True),
+        Column('is_static', Boolean, index=False, unique=False, nullable=False, default=False),
+    )
 _metadata.create_all(_engine)
 
 class Url(object):
-    def __init__(self, url):
+    def __init__(self, url, id, is_static=False):
         self.url = url
+        self.id = id
+        self.is_static = is_static
 
-class StaticUrl(object):
+mapper(Url, _urltable)
+_Session = sessionmaker(bind=_engine)
+
+class UrlIdExistsException(Exception):
     def __init__(self, id, url):
         self.id = id
         self.url = url
+    def __str__(self):
+        return "Id %s exists in Database" % (str(self.id), )
 
-mapper(Url, _urltable)
-mapper(StaticUrl, _static_urltable)
+class UrlIdOutOfRangeException(Exception):
+    def __init__(seld, id, url):
+        self.id = id
+        self.url = url
+    def __str__(self):
+        return "Id %s is too large to be inserted into the database" %(str(self.id), )
 
+def get_url(id):
+    session = _Session()
+    url = session.query(Url.url).filter(Url.id == id)[:1]
+    session.close()
+    if url:
+        return url[0][0]
+    return None
+
+
+def add_url(url, static_id=None):
+    def _add_url_to_session(session, url, id, is_static=False):
+        new_urlobj = Url(url, id, is_static)
+        session.add(new_urlobj)
+        session.flush()
+
+    def _abort_session(session):
+        session.rollback()
+        session.close()
+
+    session = _Session()
+    if not static_id:
+        """ Check if the requested URL is in the database already,
+            if so return the id of the existing entry. If not,
+            find the next unused id.
+        """
+        id_query = session.query(Url.id).filter(and_(Url.url == url, 
+                                               Url.is_static == False))[:1]
+        if id_query:
+            _abort_session(session)
+            return id_query[0][0]
+
+        id = session.execute("""select nextval('%s');""" % (_URL_ID_SEQ,)).fetchone()[0]
+        session.execute("""LOCK TABLE %s in SHARE MODE""" % (_URL_TABLE, ))
+        while session.query(Url.id).filter(Url.id == id)[:1]:
+            id = session.execute("""select nextval('%s');""" % (_URL_ID_SEQ,)).fetchone()[0]
+        _add_url_to_session(session, url, id, False)
+
+    else:
+        """ A static id was requested. In case the id is used already, an
+            UrlIdExistsException is raised. """
+        id = static_id
+        try:
+            _add_url_to_session(session, url, id, True)
+        except IntegrityError:
+            _abort_session(session)
+            raise UrlIdExistsException(id, url)
+        except DataError:
+            _abort_session(session)
+            raise UrlIdOutOfRangeException(id, url)
+    session.commit()
+    session.close()
+    return id
 
