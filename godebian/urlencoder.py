@@ -1,9 +1,9 @@
 # Python Short URL Generator
 # Based on http://code.activestate.com/recipes/576918/
 # by Michael Fogleman
-from godebian.config import GoDebianConfig
-DEFAULT_ALPHABET = GoDebianConfig.urlencoder_alphabet
-DEFAULT_BLOCK_SIZE = GoDebianConfig.urlencoder_blocksize
+from .config import UrlencoderConfig
+DEFAULT_ALPHABET = UrlencoderConfig.alphabet
+DEFAULT_BLOCK_SIZE = UrlencoderConfig.blocksize
 
 class UrlEncoder(object):
     def __init__(self, alphabet=DEFAULT_ALPHABET, block_size=DEFAULT_BLOCK_SIZE):
