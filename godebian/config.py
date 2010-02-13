@@ -34,8 +34,12 @@ from application.configuration import ConfigSection
 #print process.system_config_directory, process.local_config_directory
 
 
-class GoDebianConfig(ConfigSection):
-    urlencoder_alphabet = '1qw2ert3yuio4pQWER5TYUIOP6asdfghj7klASDFG8HJKLzxcv9bnmZXCVBN0M'
-    urlencoder_blocksize = 22
-GoDebianConfig.read('godebian.conf', 'defaults')
+class UrlencoderConfig(ConfigSection):
+    alphabet = '1qw2ert3yuio4pQWER5TYUIOP6asdfghj7klASDFG8HJKLzxcv9bnmZXCVBN0M'
+    blocksize = 22
+UrlencoderConfig.read('godebian.conf', 'urlencoder')
 
+class DatabaseConfig(ConfigSection):
+    connection = 'postgresql+psycopg2://user@password@host:port/dbname'
+    debug = False
+DatabaseConfig.read('godebian.conf', 'database')
