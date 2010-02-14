@@ -31,9 +31,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from .urlencoder import encode_url, decode_url
 from .cache import MemCache
 
-from .db import get_url as _db_get_url, add_url as _db_add_url, \
-        UrlIdExistsException as _db_UrlIdExistsException, \
-        UrlIdOutOfRangeException as _db_UrlIdOutOfRangeException
+from . import db
 
 class AddStaticUrlException(Exception):
     def __init__(self, alternate_key):
@@ -47,7 +45,7 @@ class AddStaticUrlException(Exception):
 
 
 def add_url(url):
-    id = _db_add_url(url)
+    id = db.add_url(url)
     key = encode_url(id)
     MemCache.set(key, url)
     return key
@@ -55,8 +53,8 @@ def add_url(url):
 def add_static_url(url, key):
     id = decode_url(key)
     try:
-        _db_add_url(url, id)
-    except (_db_UrlIdExistsException, _db_UrlIdOutOfRangeException):
+        db.add_url(url, id)
+    except (db.UrlIdExistsException, db.UrlIdOutOfRangeException):
         key = add_url(url)
         raise AddStaticUrlException(key)
     MemCache.set(key, url)
@@ -68,7 +66,7 @@ def get_url(key):
     if url:
         return url
     id = decode_url(key)
-    url = _db_get_url(id)
+    url = db.get_url(id)
     if url:
         MemCache.set(key, url)
     return url
