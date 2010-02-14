@@ -48,4 +48,5 @@ DatabaseConfig.read('godebian.conf', 'database')
 class MemcachedConfig(ConfigSection):
     servers = '127.0.0.1:11211'
     timeout = 600
+    prefix = 'godebian'
 MemcachedConfig.read('godebian.conf', 'memcached')
