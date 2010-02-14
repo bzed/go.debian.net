@@ -29,7 +29,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 
-from godebian.routes import *
+from godebian.web.routes import *
 from bottle import run
 
 import sys
