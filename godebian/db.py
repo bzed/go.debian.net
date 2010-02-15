@@ -62,17 +62,16 @@ class Url(object):
 mapper(Url, _urltable)
 _Session = sessionmaker(bind=_engine)
 
-class UrlIdExistsException(Exception):
+class DbException(Exception):
     def __init__(self, id, url):
         self.id = id
         self.url = url
+
+class DbIdExistsException(DbException):
     def __str__(self):
         return "Id %s exists in Database" % (str(self.id), )
 
-class UrlIdOutOfRangeException(Exception):
-    def __init__(seld, id, url):
-        self.id = id
-        self.url = url
+class DbIdOutOfRangeException(DbException):
     def __str__(self):
         return "Id %s is too large to be inserted into the database" %(str(self.id), )
 

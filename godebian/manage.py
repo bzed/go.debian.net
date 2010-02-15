@@ -54,7 +54,7 @@ def add_static_url(url, key):
     id = decode_url(key)
     try:
         db.add_url(url, id)
-    except (db.UrlIdExistsException, db.UrlIdOutOfRangeException):
+    except db.DbException:
         key = add_url(url)
         raise AddStaticUrlException(key)
     MemCache.set(key, url)
