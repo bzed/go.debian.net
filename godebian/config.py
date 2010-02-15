@@ -50,3 +50,9 @@ class MemcachedConfig(ConfigSection):
     timeout = 600
     prefix = 'godebian'
 MemcachedConfig.read('godebian.conf', 'memcached')
+
+class BottleConfig(ConfigSection):
+    debug = False
+    templatepath = os.path.realpath(os.path.join(os.path.dirname(__file__), 'web', 'views'))
+BottleConfig.read('godebian.conf', 'bottle')
+

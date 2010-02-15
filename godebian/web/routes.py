@@ -29,10 +29,39 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 
-from bottle import route, view
+from bottle import route, view, redirect, request, abort, debug, TEMPLATE_PATH
+from ..manage import get_url
+from ..config import BottleConfig
+from .jsonrpc import jsonmethod, jsondispatch
+
+debug(BottleConfig.debug)
+TEMPLATE_PATH = BottleConfig.templatepath
 
 @route('/')
 def index():
     return 'Hello World!'
 
+@route('/:key#[0-9a-zA-Z]+#')
+def redirect_by_key(key):
+    url = get_url(key)
+    if url:
+        redirect(url)
+    else:
+        abort(404, "Unable to find site's URL to redirect to.")
+
+@route('/rpc/json', method='POST')
+def rpc_json():
+    return jsondispatch(request.POST.keys()[0])
+
+@jsonmethod('add_url')
+def json_add_url(url):
+    return 12314
+
+@jsonmethod('add_static_url')
+def json_add_static_url(url, key):
+    pass
+
+@jsonmethod('get_url')
+def json_get_url(key):
+    pass
 
