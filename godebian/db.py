@@ -29,7 +29,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, \
-                        Sequence, Boolean, and_
+                        Sequence, Boolean, and_, func, DateTime, Text
 from sqlalchemy.orm import mapper, sessionmaker
 from sqlalchemy.exc import IntegrityError, DataError
 
@@ -50,14 +50,17 @@ _urltable = Table(_URL_TABLE, _metadata,
         Column('id', _URL_ID_TYPE, Sequence(_URL_ID_SEQ), index=True, unique=True, nullable=False),
         Column('url', String, index=True, unique=False, nullable=True),
         Column('is_static', Boolean, index=False, unique=False, nullable=False, default=False),
+        Column('create_date', DateTime, default=func.now()),
+        Column('log', Text, nullable=True),
     )
 _metadata.create_all(_engine)
 
 class Url(object):
-    def __init__(self, url, id, is_static=False):
+    def __init__(self, url, id, is_static=False, log=None):
         self.url = url
         self.id = id
         self.is_static = is_static
+        self.log = log
 
 mapper(Url, _urltable)
 _Session = sessionmaker(bind=_engine)
@@ -84,9 +87,9 @@ def get_url(id):
     return None
 
 
-def add_url(url, static_id=None):
-    def _add_url_to_session(session, url, id, is_static=False):
-        new_urlobj = Url(url, id, is_static)
+def add_url(url, static_id=None, log=None):
+    def _add_url_to_session(session, url, id, is_static=False, log=None):
+        new_urlobj = Url(url, id, is_static, log)
         session.add(new_urlobj)
         session.flush()
 
@@ -110,14 +113,14 @@ def add_url(url, static_id=None):
         session.execute("""LOCK TABLE %s in SHARE MODE""" % (_URL_TABLE, ))
         while session.query(Url.id).filter(Url.id == id)[:1]:
             id = session.execute("""select nextval('%s');""" % (_URL_ID_SEQ,)).fetchone()[0]
-        _add_url_to_session(session, url, id, False)
+        _add_url_to_session(session, url, id, False, log)
 
     else:
         """ A static id was requested. In case the id is used already, an
             UrlIdExistsException is raised. """
         id = static_id
         try:
-            _add_url_to_session(session, url, id, True)
+            _add_url_to_session(session, url, id, True, log)
         except IntegrityError:
             _abort_session(session)
             raise UrlIdExistsException(id, url)
