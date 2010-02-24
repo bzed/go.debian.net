@@ -44,18 +44,18 @@ class AddStaticUrlException(Exception):
         return self.alternate_key
 
 
-def add_url(url):
-    id = db.add_url(url)
+def add_url(url, log=None):
+    id = db.add_url(url, log=log)
     key = encode_url(id)
     MemCache.set(key, url)
     return key
 
-def add_static_url(url, key):
+def add_static_url(url, key, log=None):
     id = decode_url(key)
     try:
-        db.add_url(url, id)
+        db.add_url(url, id, log=log)
     except db.DbException:
-        key = add_url(url)
+        key = add_url(url, log=log)
         raise AddStaticUrlException(key)
     MemCache.set(key, url)
     return key
