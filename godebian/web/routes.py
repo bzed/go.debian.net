@@ -29,14 +29,15 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 
-from bottle import route, view, redirect, request, abort, debug, TEMPLATE_PATH
+from bottle import route, mako_view as view, redirect, request, abort, debug, TEMPLATE_PATH, send_file
+
 from ..manage import get_url, add_url, add_static_url
 from ..config import BottleConfig, UrlencoderConfig
 
 from .jsonrpc import jsonmethod, jsondispatch
 
 debug(BottleConfig.debug)
-TEMPLATE_PATH = BottleConfig.templatepath
+TEMPLATE_PATH = BottleConfig.template_dir
 
 
 def _check_access(ip):
@@ -48,6 +49,11 @@ def _check_access(ip):
 @route('/')
 def index():
     return 'Hello World!'
+
+@route('/static/:filename')
+def static_file(filename):
+    send_file(filename, root=BottleConfig.static_dir)
+
 
 @route('/:key#[' + UrlencoderConfig.alphabet + ']+#')
 def redirect_by_key(key):

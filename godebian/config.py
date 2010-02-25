@@ -69,6 +69,7 @@ MemcachedConfig.read('godebian.conf', 'memcached')
 
 class BottleConfig(ConfigSection):
     debug = False
-    templatepath = os.path.realpath(os.path.join(os.path.dirname(__file__), 'web', 'views'))
+    template_dir = os.path.realpath(os.path.join(os.path.dirname(__file__), 'web', 'views'))
+    static_dir = os.path.realpath(os.path.join(os.path.dirname(__file__), 'web', 'static'))
     allowed_rpc_ips = ConfigSetting(type=IPyNetworkRangeList, value=[])
 BottleConfig.read('godebian.conf', 'bottle')
