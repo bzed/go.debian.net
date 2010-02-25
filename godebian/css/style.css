@@ -1,0 +1,11 @@
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	background: #fff;
+	font-family: 'Lucidia Grande', Verdana, Arial;
+	font-size: 12px;
+	color: #000;
+}
