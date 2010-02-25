@@ -28,7 +28,14 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from godebian.web.routes import *
+try:
+    from godebian.web.routes import *
+except ImportError:
+    import sys
+    import os
+    sys.path = [os.path.realpath(os.path.dirname(__file__))] + sys.path
+    from godebian.web.routes import *
+
 import bottle
 
 application = bottle.default_app()
