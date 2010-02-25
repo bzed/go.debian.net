@@ -29,11 +29,27 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
+import re
 
-from application.configuration import ConfigSection
+import IPy
+
+from application.configuration import ConfigSection, ConfigSetting, datatypes
 from application.process import process
 
 process.local_config_directory = os.path.realpath(os.path.dirname(__file__))
+
+
+class IPyNetworkRangeList(list):
+    def __new__(cls, value):
+        if isinstance(value, (tuple, list)):
+            return [IPy.IP(x) for x in value]
+        elif isinstance(value, basestring):
+            if value.lower() in ('none', ''):
+                return []
+            return [IPy.IP(x) for x in re.split(r'\s*,\s*', value)]
+        else:
+            raise TypeError("value must be a string, list or tuple")
+
 
 class UrlencoderConfig(ConfigSection):
     alphabet = '1qw2ert3yuio4pQWER5TYUIOP6asdfghj7klASDFG8HJKLzxcv9bnmZXCVBN0M'
@@ -54,5 +70,5 @@ MemcachedConfig.read('godebian.conf', 'memcached')
 class BottleConfig(ConfigSection):
     debug = False
     templatepath = os.path.realpath(os.path.join(os.path.dirname(__file__), 'web', 'views'))
+    allowed_rpc_ips = ConfigSetting(type=IPyNetworkRangeList, value=[])
 BottleConfig.read('godebian.conf', 'bottle')
-

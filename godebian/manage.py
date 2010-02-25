@@ -30,10 +30,28 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from .urlencoder import encode_url, decode_url
 from .cache import MemCache
-
+from .config import UrlencoderConfig
 from . import db
 
-class AddStaticUrlException(Exception):
+import re
+import urlparse
+
+_key_validator_re = re.compile(r'[' + UrlencoderConfig.alphabet + ']+')
+def _key_valid(key):
+    if _key_validator_re.match(key):
+        return True
+    return False
+
+def _url_valid(url):
+    spliturl = a.urlsplit(url)
+    if spliturl.scheme and spliturl.netloc:
+        return True
+    return False
+
+class ManagementException(Exception):
+    pass
+
+class AddStaticUrlException(ManagementException):
     def __init__(self, alternate_key):
         self.alternate_key = alternate_key
 
@@ -43,14 +61,27 @@ class AddStaticUrlException(Exception):
     def get_alternate_key(self):
         return self.alternate_key
 
+class InvalidUrlException(ManagementException):
+    def __init__(self, url):
+        self.url = url
+
+    def __str__(self):
+        return "%s is not a valid url." %(self.url, )
+
 
 def add_url(url, log=None):
+    if not _url_valid(url):
+        raise InvalidUrlException(url)
     id = db.add_url(url, log=log)
     key = encode_url(id)
     MemCache.set(key, url)
     return key
 
 def add_static_url(url, key, log=None):
+    if not _url_valid(url):
+        raise InvalidUrlException(url)
+    if not _key_valid(key):
+        raise AddStaticUrlException(key)
     id = decode_url(key)
     try:
         db.add_url(url, id, log=log)
@@ -62,6 +93,8 @@ def add_static_url(url, key, log=None):
 
 
 def get_url(key):
+    if not _key_valid(key):
+        return None
     url = MemCache.get(key)
     if url:
         return url
@@ -69,5 +102,6 @@ def get_url(key):
     url = db.get_url(id)
     if url:
         MemCache.set(key, url)
-    return url
+        return url
+    return None
 

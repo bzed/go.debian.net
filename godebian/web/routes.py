@@ -30,18 +30,26 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 from bottle import route, view, redirect, request, abort, debug, TEMPLATE_PATH
-from ..manage import get_url
-from ..config import BottleConfig
+from ..manage import get_url, add_url, add_static_url
+from ..config import BottleConfig, UrlencoderConfig
+
 from .jsonrpc import jsonmethod, jsondispatch
 
 debug(BottleConfig.debug)
 TEMPLATE_PATH = BottleConfig.templatepath
 
+
+def _check_access(ip):
+    for allowed_ip in BottleConfig.allowed_rpc_ips:
+        if ip in allowed_ip:
+            return True
+    return False
+
 @route('/')
 def index():
     return 'Hello World!'
 
-@route('/:key#[0-9a-zA-Z]+#')
+@route('/:key#[' + UrlencoderConfig.alphabet + ']+#')
 def redirect_by_key(key):
     url = get_url(key)
     if url:
@@ -51,17 +59,20 @@ def redirect_by_key(key):
 
 @route('/rpc/json', method='POST')
 def rpc_json():
+    remote_address = request.environ['REMOTE_ADDR']
+    if not _check_access(remote_address):
+        abort(401)
     return jsondispatch(request.POST.keys()[0])
 
 @jsonmethod('add_url')
 def json_add_url(url):
-    return 12314
+    return add_url(url, log=request.environ['REMOTE_ADDR'])
 
 @jsonmethod('add_static_url')
 def json_add_static_url(url, key):
-    pass
+    return add_static_url(url, key, log=request.environ['REMOTE_ADDR'])
 
 @jsonmethod('get_url')
 def json_get_url(key):
-    pass
+    return get_url(key)
 
