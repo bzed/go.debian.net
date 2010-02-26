@@ -36,7 +36,9 @@ import IPy
 from application.configuration import ConfigSection, ConfigSetting, datatypes
 from application.process import process
 
-process.local_config_directory = os.path.realpath(os.path.dirname(__file__))
+#swap config directories, makes more sense in our case.
+process.local_config_directory = process.system_config_directory
+process.system_config_directory = os.path.realpath(os.path.dirname(__file__))
 
 
 class IPyNetworkRangeList(list):
