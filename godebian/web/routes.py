@@ -28,8 +28,9 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-
-from bottle import route, mako_view as view, redirect, request, abort, debug, TEMPLATE_PATH, send_file
+import os
+import bottle
+from bottle import route, mako_view as view, redirect, request, abort, debug, send_file
 
 from ..manage import get_url, add_url, add_static_url
 from ..config import BottleConfig, UrlencoderConfig
@@ -37,8 +38,8 @@ from ..config import BottleConfig, UrlencoderConfig
 from .jsonrpc import jsonmethod, jsondispatch
 
 debug(BottleConfig.debug)
-TEMPLATE_PATH = BottleConfig.template_dir
 
+bottle.TEMPLATE_PATH = [os.path.realpath(BottleConfig.template_dir)]
 
 def _check_access(ip):
     for allowed_ip in BottleConfig.allowed_rpc_ips:
@@ -47,8 +48,9 @@ def _check_access(ip):
     return False
 
 @route('/')
+@view('base')
 def index():
-    return 'Hello World!'
+    return { 'title' : 'deb.li: Welcome to the Debian Short-URL Service!' }
 
 @route('/static/:filename')
 def static_file(filename):
@@ -61,7 +63,7 @@ def redirect_by_key(key):
     if url:
         redirect(url)
     else:
-        abort(404, "Unable to find site's URL to redirect to.")
+        abort(404, "Unable to find an URL to redirect to.")
 
 @route('/rpc/json', method='POST')
 def rpc_json():
