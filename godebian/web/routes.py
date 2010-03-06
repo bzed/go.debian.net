@@ -48,7 +48,7 @@ def _check_access(ip):
     return False
 
 @route('/')
-@view('base')
+@view('index')
 def index():
     return { 'title' : 'deb.li: Welcome to the Debian Short-URL Service!' }
 
