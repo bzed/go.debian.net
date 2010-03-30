@@ -5,6 +5,8 @@
 		<title>deb.li: ${title}</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" type="text/css" href="style.css" />
+		{% block extra_heads %}
+		{% endblock %}
 	</head>
 	<body>
 		<div class="container-outer">
@@ -12,18 +14,23 @@
 				<div class="header-outer">
 					<div class="header-inner">
 						<div class="header-title">deb.li: Debian ShortURL Service</div>
-						<div class="header-subtitle">${title}</div>
+						<div class="header-subtitle">{{ title }}</div>
 					</div> <!-- header-inner -->
 				</div> <!-- header-outer -->
 				<div class="body-outer">
 					<div class="body-logo">
+                                                {% block body_logo %}
+                                                {% endblock %}
 					</div> <!-- body-logo -->
 					<div class="body-content">
-						${self.body()}
+						{% block body %}
+						{% endblock %}
 					</div> <!-- body-content -->
 				</div> <!-- body-outer -->
 				<div class="footer-outer">
 					<div class="footer-inner">
+                                                {% block footer_inner %}
+                                                {% endblock %}
 					</div> <!-- footer-inner -->
 				</div> <!-- footer-outer -->
 			</div> <!-- container-inner -->

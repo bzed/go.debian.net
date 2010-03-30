@@ -29,8 +29,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
-import bottle
-from bottle import route, mako_view as view, redirect, request, abort, debug, send_file
+from bottle import view as bottle_view, route, Jinja2Template, redirect, request, abort, debug, send_file
 
 from ..manage import get_url, add_url, add_static_url
 from ..config import BottleConfig, UrlencoderConfig
@@ -39,7 +38,11 @@ from .jsonrpc import jsonmethod, jsondispatch
 
 debug(BottleConfig.debug)
 
-bottle.TEMPLATE_PATH = [os.path.realpath(BottleConfig.template_dir)]
+def view(tpl_name, **kargs):
+    kargs['template_adapter'] = Jinja2Template
+    kargs['template_lookup'] = [os.path.realpath(BottleConfig.template_dir)]
+    return bottle_view(tpl_name, **kargs)
+
 
 def _check_access(ip):
     for allowed_ip in BottleConfig.allowed_rpc_ips:
@@ -50,7 +53,7 @@ def _check_access(ip):
 @route('/')
 @view('index')
 def index():
-    return { 'title' : 'deb.li: Welcome to the Debian Short-URL Service!' }
+    return { 'title' : 'Welcome!' }
 
 @route('/static/:filename')
 def static_file(filename):

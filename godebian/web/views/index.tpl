@@ -1,2 +1,2 @@
-<%inherit file="base.tpl"/>
+{% extends "base" %}
 
