@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
-		<title>deb.li: {{ title }}</title>
+		<title>deb.li: Debian ShortURL Service - %{ block title %}{{ title }}{% endblock %}</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" type="text/css" href="style.css" />
 		{% block extra_heads %}
@@ -13,8 +13,8 @@
 			<div class="container-inner">
 				<div class="header-outer">
 					<div class="header-inner">
-						<div class="header-title">deb.li: Debian ShortURL Service</div>
-						<div class="header-subtitle">{{ title }}</div>
+						<div class="header-title"><h1>deb.li: Debian ShortURL Service</h1></div>
+						<div class="header-subtitle"><h2>{% block header_subtitle %}{{ title }}{% endblock %}</h2></div>
 					</div> <!-- header-inner -->
 				</div> <!-- header-outer -->
 				<div class="body-outer">

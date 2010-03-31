@@ -55,6 +55,11 @@ def _check_access(ip):
 def index():
     return { 'title' : 'Welcome!' }
 
+@route('/imprint')
+@view('imprint')
+def imprint():
+    return {}
+
 @route('/static/:filename')
 def static_file(filename):
     send_file(filename, root=BottleConfig.static_dir)
@@ -67,6 +72,18 @@ def redirect_by_key(key):
         redirect(url)
     else:
         abort(404, "Unable to find an URL to redirect to.")
+
+@route('/p/:key#[' + UrlencoderConfig.alphabet + ']+#')
+@view('redirect-preview')
+def redirect_by_key_with_preview(key):
+    url = get_url(key)
+    if not url:
+        abort(404, "Unable to find an URL to redirect to.")
+    return {
+        'domain' : BottleConfig.domain,
+        'key' : key,
+        'url' : url
+    }
 
 @route('/rpc/json', method='POST')
 def rpc_json():
