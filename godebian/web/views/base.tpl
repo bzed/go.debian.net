@@ -29,8 +29,18 @@
 				</div> <!-- body-outer -->
 				<div class="footer-outer">
 					<div class="footer-inner">
-                                                {% block footer_inner %}
-                                                {% endblock %}
+						<div class="footer-content">
+	                                                {% block footer_content %}
+        	                                        {% endblock %}
+						</div>
+						<div class="footer-banner">
+                                                        {% block footer_banner %}
+								<ul>
+									<li><a href="http://www.debian.org/"><img src="/static/button-debian.png" alt="debian.org"/></a></li>
+									<li><a href="http://www.credativ.de"><img src="/static/button-credativ.png" alt="credativ GmbH" /></a></li>
+								</ul>
+                                                        {% endblock %}
+						</div>
 					</div> <!-- footer-inner -->
 				</div> <!-- footer-outer -->
 			</div> <!-- container-inner -->
