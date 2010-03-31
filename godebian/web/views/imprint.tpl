@@ -1,5 +1,5 @@
 {% extends "base" %}
-%{ block title %}Imprint{% endblock %}
+{% block title %}Imprint{% endblock %}
 {% block header_subtitle %}Imprint{% endblock %}
 {% block body %}
 <p>This page is maintained by</p>
