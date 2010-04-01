@@ -27,8 +27,17 @@ a {
 	float: left;
 }
 
+.header-inner {
+	min-height: 65px;
+}
+
+.header-inner h1 {
+	color: #fff;
+}
+
 .footer-inner ul {
 	list-style: none;
+	width: 100%;
 }
 
 .footer-inner li {
