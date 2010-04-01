@@ -25,10 +25,11 @@ a {
 
 .header-logo {
 	float: left;
+	padding: 10px 10px 10px 10px;
 }
 
 .header-inner {
-	min-height: 65px;
+	min-height: 85px;
 }
 
 .header-inner h1 {
@@ -43,4 +44,6 @@ a {
 .footer-inner li {
 	display: block;
 	float: left;
+	margin-right: 20px;
 }
+
