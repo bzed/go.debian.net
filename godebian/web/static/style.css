@@ -18,7 +18,20 @@ a {
 	text-decoration: none;
 }
 
+.header-outer {
+	background-color: #000;
+	color: #fff;
+}
+
+.header-logo {
+	float: left;
+}
+
 .footer-inner ul {
 	list-style: none;
 }
 
+.footer-inner li {
+	display: block;
+	float: left;
+}

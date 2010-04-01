@@ -13,8 +13,11 @@
 		<div class="container-outer">
 			<div class="container-inner">
 				<div class="header-outer">
+					<div class="header-logo">
+						<img src="/static/openlogo-nd-50.png" alt="debian.org"/>
+					</div>
 					<div class="header-inner">
-						<div class="header-title"><h1><img src="/static/openlogo-nd-50.png" alt="debian.org"/>deb.li: Debian ShortURL Service</h1></div>
+						<div class="header-title"><h1>deb.li: Debian ShortURL Service</h1></div>
 						<div class="header-subtitle"><h2>{% block header_subtitle %}{{ title }}{% endblock %}</h2></div>
 					</div> <!-- header-inner -->
 				</div> <!-- header-outer -->
