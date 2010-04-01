@@ -38,6 +38,7 @@
 								<li><a href="http://wiki.debian.org/deb.li">Documentation</a></li>
 								<li><a href="/imprint">Imprint/Impressum</a></li>
 								<li><a href="mailto:bzed@debian.org?subject=deb.li">Contact</a></li>
+								<li>&nbsp;</li>
 							</ul>
 						</div>
 						<div class="footer-powered-by">

@@ -36,6 +36,11 @@ a {
 	color: #fff;
 }
 
+.footer-inner {
+	color: #fff;
+	background-color: #777;
+}
+
 .footer-inner ul {
 	list-style: none;
 	width: 100%;
@@ -45,5 +50,15 @@ a {
 	display: block;
 	float: left;
 	margin-right: 20px;
+	border-left: thin solid #000;
 }
 
+.footer-powered-by {
+	clear: both;
+}
+
+.footer-banner {
+	text-align: center;
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
