@@ -43,7 +43,7 @@ def _key_valid(key):
     return False
 
 def _url_valid(url):
-    spliturl = a.urlsplit(url)
+    spliturl = urlparse.urlsplit(url)
     if spliturl.scheme and spliturl.netloc:
         return True
     return False
