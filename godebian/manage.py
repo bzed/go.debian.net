@@ -56,7 +56,7 @@ class AddStaticUrlException(ManagementException):
         self.alternate_key = alternate_key
 
     def __str__(self):
-        return "The custom alias you've chosen is not available or too long. We've created a random one for you instead, but you can try assigning a different custom alias again."
+        return "The custom alias you've chosen is not available or too long. We've created a random one for you instead, but you can try assigning a different custom alias again.\n\n%s" %(self.alternate_key,)
 
     def get_alternate_key(self):
         return self.alternate_key
