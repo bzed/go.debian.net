@@ -40,7 +40,7 @@
 						<div class="footer-content">
 	                                                {% block footer_content %}
         	                                        {% endblock %}
-							<p>Powered by <a href="http://bzed.de">Bernd Zeimetz'</a> <a href="http://git.recluse.de/?p=debian/go.debian.net.git">godebian</a> software, using <a href="http://www.python.org/">Python</a>, <a href="http://bottle.paws.de/">Bottle</a>, <a href="http://www.sqlalchemy.org/">SQLAlchemy</a> and <a href="http://www.postgresql.org/">PostgreSQL</a></p>
+							<p>Running <a href="http://bzed.de">Bernd Zeimetz'</a> <a href="http://git.recluse.de/?p=debian/go.debian.net.git">godebian</a> software, using <a href="http://www.python.org/">Python</a>, <a href="http://bottle.paws.de/">Bottle</a>, <a href="http://www.sqlalchemy.org/">SQLAlchemy</a> and <a href="http://www.postgresql.org/">PostgreSQL</a></p>
 						</div>
 						<div class="footer-banner">
                                                         {% block footer_banner %}
