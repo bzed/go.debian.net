@@ -29,7 +29,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import os
-from bottle import view as bottle_view, route, Jinja2Template, redirect, request, abort, debug, send_file
+from bottle import jinja2_view, jinja2_template, route, redirect, request, debug, send_file, HTTPError, HTTP_CODES
 
 from ..manage import get_url, add_url, add_static_url
 from ..config import BottleConfig, UrlencoderConfig
@@ -38,11 +38,29 @@ from .jsonrpc import jsonmethod, jsondispatch
 
 debug(BottleConfig.debug)
 
-def view(tpl_name, **kargs):
-    kargs['template_adapter'] = Jinja2Template
-    kargs['template_lookup'] = [os.path.realpath(BottleConfig.template_dir)]
-    return bottle_view(tpl_name, **kargs)
 
+_template_lookup=[os.path.realpath(BottleConfig.template_dir)]
+def view(tpl_name, **kargs):
+    kargs['template_lookup'] = _template_lookup
+    return jinja2_view(tpl_name, **kargs)
+
+def template(tpl_name, **kargs):
+    kargs['template_lookup'] = _template_lookup
+    return jinja2_template(tpl_name, **kargs)
+
+
+class NiceHTTPError(HTTPError):
+    def __str__(self):
+        kargs = {
+                    'status' : self.http_status,
+                    'url' : request.path,
+                    'error_name' : HTTP_CODES.get(self.http_status, 'Unknown').title(),
+                    'error_message' : ''.join(self.output)
+                }
+        return template('error', **kargs)
+
+def abort(code=500, text='Unknown Error: Appliction stopped.'):
+    raise NiceHTTPError(code, text)
 
 def _check_access(ip):
     for allowed_ip in BottleConfig.allowed_rpc_ips:
