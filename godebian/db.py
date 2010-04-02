@@ -117,16 +117,16 @@ def add_url(url, static_id=None, log=None):
 
     else:
         """ A static id was requested. In case the id is used already, an
-            UrlIdExistsException is raised. """
+            DbIdExistsException is raised. """
         id = static_id
         try:
             _add_url_to_session(session, url, id, True, log)
         except IntegrityError:
             _abort_session(session)
-            raise UrlIdExistsException(id, url)
+            raise DbIdExistsException(id, url)
         except DataError:
             _abort_session(session)
-            raise UrlIdOutOfRangeException(id, url)
+            raise DbIdOutOfRangeException(id, url)
     session.commit()
     session.close()
     return id
