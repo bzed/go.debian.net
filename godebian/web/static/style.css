@@ -9,7 +9,7 @@ body {
 	background-repeat: repeat;
 	background-attachment:fixed;
 	font-family: 'Lucidia Grande', Verdana, Arial;
-	font-size: 14px;
+	font-size: 17px;
 	color: #000;
 }
 
@@ -54,6 +54,10 @@ a {
 .footer-inner {
 	color: #fff;
 	background-color: #aaa;
+}
+
+.body-outer {
+	min-height: 170px;
 }
 
 .footer-banner {
