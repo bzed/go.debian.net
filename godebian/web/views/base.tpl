@@ -21,6 +21,14 @@
 						<div class="header-subtitle"><h2>{% block header_subtitle %}{{ title }}{% endblock %}</h2></div>
 					</div> <!-- header-inner -->
 				</div> <!-- header-outer -->
+				<div class="menu-outer">
+					<div class="menu-inner">
+						<a href="/">Home</a> |
+						<a href="http://wiki.debian.org/deb.li">Documentation</a> |
+						<a href="/imprint">Imprint/Impressum</a> |
+						<a href="mailto:bzed@debian.org?subject=deb.li">Contact</a>
+					</div>
+				</div>
 				<div class="body-outer">
 					<div class="body-content">
 						{% block body %}
@@ -32,26 +40,16 @@
 						<div class="footer-content">
 	                                                {% block footer_content %}
         	                                        {% endblock %}
-						</div>
-						<div class="footer-menu">
-							<ul>
-								<li><a href="http://wiki.debian.org/deb.li">Documentation</a></li>
-								<li><a href="/imprint">Imprint/Impressum</a></li>
-								<li><a href="mailto:bzed@debian.org?subject=deb.li">Contact</a></li>
-								<li>&nbsp;</li>
-							</ul>
-						</div>
-						<div class="footer-powered-by">
 							<p>Powered by <a href="http://bzed.de">Bernd Zeimetz'</a> <a href="http://git.recluse.de/?p=debian/go.debian.net.git">godebian</a> software, using <a href="http://www.python.org/">Python</a>, <a href="http://bottle.paws.de/">Bottle</a>, <a href="http://www.sqlalchemy.org/">SQLAlchemy</a> and <a href="http://www.postgresql.org/">PostgreSQL</a></p>
 						</div>
 						<div class="footer-banner">
                                                         {% block footer_banner %}
-								<ul>
-									<li><a href="http://www.debian.org/"><img src="/static/button-debian.png" alt="debian.org"/></a></li>
-									<li><a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="/static/button-css.png" alt="valid CSS"/></a></li>
-									<li><a href="http://validator.w3.org/check/referer"><img src="/static/button-xhtml.png" alt="valid XHTML"/></a></li>
-									<li><a href="http://www.credativ.de"><img src="/static/button-credativ.png" alt="credativ GmbH" /></a></li>
-								</ul>
+								<p>
+									<a href="http://www.debian.org/"><img src="/static/button-debian.png" alt="debian.org"/></a>
+									<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="/static/button-css.png" alt="valid CSS"/></a>
+									<a href="http://validator.w3.org/check/referer"><img src="/static/button-xhtml.png" alt="valid XHTML"/></a>
+									<a href="http://www.credativ.de"><img src="/static/button-credativ.png" alt="credativ GmbH" /></a>
+								</p>
                                                         {% endblock %}
 						</div>
 					</div> <!-- footer-inner -->

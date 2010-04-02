@@ -4,9 +4,12 @@
 }
 
 body {
-	background: #fff;
+	background-color: #111;
+	background-image: url('/static/openlogo-nd-50.png');
+	background-repeat: repeat;
+	background-attachment:fixed;
 	font-family: 'Lucidia Grande', Verdana, Arial;
-	font-size: 12px;
+	font-size: 14px;
 	color: #000;
 }
 
@@ -18,9 +21,17 @@ a {
 	text-decoration: none;
 }
 
+.container-inner {
+	width: 84%;
+	margin-left: 8%;
+	margin-right: 8%;
+	background-color: white;
+}
+
 .header-outer {
-	background-color: #000;
+	background-color: #003d6d;
 	color: #fff;
+	border-bottom: 0.5em solid #c70036;
 }
 
 .header-logo {
@@ -36,35 +47,23 @@ a {
 	color: #fff;
 }
 
+.menu-inner {
+	background-color: #aaa;
+}
+
 .footer-inner {
 	color: #fff;
-	background-color: #777;
-}
-
-.footer-inner ul {
-	list-style: none;
-	width: 100%;
-}
-
-.footer-menu li {
-	margin-right: 10px;
-	margin-left: 10px;
-	border-left: thin solid #fff;
-	display: block;
-	float: left;
-}
-
-.footer-powered-by {
-	clear: both;
+	background-color: #aaa;
 }
 
 .footer-banner {
+	vertical-align: middle;
 	text-align: center;
-	padding-top: 40px;
-	padding-bottom: 40px;
+	padding-top: 20px;
+	padding-bottom: 20px;
 }
 
-.footer-banner li {
-	float: center;
-	display: block;
+.footer-banner a {
+        padding-left: 20px;
+	padding-right: 20px;
 }
