@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 __author__ = "Bernd Zeimetz"
 __contact__ = "bzed@debian.org"
