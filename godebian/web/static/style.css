@@ -5,9 +5,6 @@
 
 body {
 	background-color: #111;
-	background-image: url('/static/openlogo-nd-50.png');
-	background-repeat: repeat;
-	background-attachment:fixed;
 	font-family: 'Lucidia Grande', Verdana, Arial;
 	font-size: 17px;
 	color: #000;
