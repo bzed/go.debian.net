@@ -71,7 +71,8 @@ def _check_access(ip):
 @route('/')
 @view('index')
 def index():
-    return { 'title' : 'Welcome!' }
+    return { 'title' : 'Welcome!',
+             'google_site_verification' : BottleConfig.google_site_verification }
 
 @route('/imprint')
 @view('imprint')
