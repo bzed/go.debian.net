@@ -68,11 +68,13 @@ def _check_access(ip):
             return True
     return False
 
+__indexopts = { 'title' : 'Welcome!' }
+if BottleConfig.google_site_verification:
+    __indexopts['google_site_verification'] = BottleConfig.google_site_verification
 @route('/')
 @view('index')
 def index():
-    return { 'title' : 'Welcome!',
-             'google_site_verification' : BottleConfig.google_site_verification }
+    return __indexopts
 
 @route('/imprint')
 @view('imprint')

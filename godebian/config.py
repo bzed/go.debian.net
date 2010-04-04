@@ -75,5 +75,5 @@ class BottleConfig(ConfigSection):
     static_dir = os.path.realpath(os.path.join(os.path.dirname(__file__), 'web', 'static'))
     allowed_rpc_ips = ConfigSetting(type=IPyNetworkRangeList, value=[])
     domain = 'deb.li'
-    google_site_verification = None
+    google_site_verification = ''
 BottleConfig.read('godebian.conf', 'bottle')
