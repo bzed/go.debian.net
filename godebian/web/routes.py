@@ -55,7 +55,7 @@ class NiceHTTPError(HTTPError):
     def __str__(self):
         kargs = {
                     'status' : self.http_status,
-                    'url' : request.url,
+                    'url' : request.path,
                     'error_name' : HTTP_CODES.get(self.http_status, 'Unknown').title(),
                     'error_message' : cgi.escape(''.join(self.output)),
                     'debug' : BottleConfig.debug
