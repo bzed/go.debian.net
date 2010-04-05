@@ -43,6 +43,10 @@ def jsondispatch(data):
     try:
         rawdata = anyjson.deserialize(data)
     except SyntaxError:
+        print "SyntaxError in data: %s" %(data, )
+        return None
+    except ValueError:
+        print "ValueError in data: %s" %(data, )
         return None
     id = rawdata.get('id', 0)
     retDict = { 'id' : id , 'error' : None }
