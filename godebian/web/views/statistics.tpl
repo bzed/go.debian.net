@@ -8,7 +8,7 @@
 		ShortURLs with dynamically generated keys: {{ non_static_urls }}
 	</li>
 	<li>
-		ShortURLs selected keys: {{ static_urls }}
+		ShortURLs with pre-selected keys: {{ static_urls }}
 	</li>
 </ul>
 {% endblock %}
