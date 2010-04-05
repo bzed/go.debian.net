@@ -35,7 +35,7 @@ except ImportError:
     sys.path = [os.path.realpath(os.path.dirname(__file__))] + sys.path
     from godebian.web.routes import *
 
-import godebian.web.bottle
+from godebian.web import bottle
 
 application = bottle.default_app()
 
