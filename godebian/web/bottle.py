@@ -161,7 +161,7 @@ class HTTPError(HTTPResponse):
         self.traceback = traceback
 
     def __repr__(self):
-        return ''.join(ERROR_PAGE_TEMPLATE.render(e=self))
+        return ''.join(ERROR_PAGE_TEMPLATE.render(e=self, url=cgi.escape(request.url)))
 
 
 
@@ -1637,7 +1637,7 @@ HTTP_CODES = {
 
 ERROR_PAGE_TEMPLATE = SimpleTemplate("""
 %import cgi
-%from bottle import DEBUG, HTTP_CODES, request
+%from bottle import DEBUG, HTTP_CODES
 %status_name = HTTP_CODES.get(e.status, 'Unknown').title()
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html>
@@ -1646,7 +1646,7 @@ ERROR_PAGE_TEMPLATE = SimpleTemplate("""
     </head>
     <body>
         <h1>Error {{e.status}}: {{status_name}}</h1>
-        <p>Sorry, the requested URL <tt>{{cgi.escape(request.url)}}</tt> caused an error:</p>
+        <p>Sorry, the requested URL <tt>{{url}}</tt> caused an error:</p>
         <pre>{{cgi.escape(str(e.output))}}</pre>
         %if DEBUG and e.exception:
           <h2>Exception:</h2>
