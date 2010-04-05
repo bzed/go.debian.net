@@ -33,7 +33,7 @@ import os
 
 from .bottle import jinja2_view, jinja2_template, route, redirect, request, debug, send_file, HTTPError, HTTP_CODES
 
-from ..manage import get_url, add_url, add_static_url
+from ..manage import get_url, add_url, add_static_url, count
 from ..config import BottleConfig, UrlencoderConfig
 
 from .jsonrpc import jsonmethod, jsondispatch
@@ -83,7 +83,7 @@ if BottleConfig.google_site_verification:
 def index():
     return __indexopts
 
-@route('/imprint')
+@route('/imprint.html')
 @view('imprint')
 def imprint():
     return {}
@@ -127,6 +127,14 @@ def rpc_json():
     if not _check_access(remote_address):
         abort(401)
     return jsondispatch(request.body.getvalue())
+
+@route('/stats.html')
+@view('statistics')
+def statistics():
+    return {
+        'static_urls' : count(is_static=True),
+        'non_static_urls' : count(is_static=False)
+    }
 
 @jsonmethod('add_url')
 def json_add_url(url):

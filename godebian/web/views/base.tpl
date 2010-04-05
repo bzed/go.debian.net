@@ -25,7 +25,8 @@
 					<div class="menu-inner">
 						<a href="/">Home</a> |
 						<a href="http://wiki.debian.org/deb.li">Documentation</a> |
-						<a href="/imprint">Imprint/Impressum</a> |
+						<a href="/stats.html">Statistics</a> |
+						<a href="/imprint.html">Imprint/Impressum</a> |
 						<a href="mailto:bzed@debian.org?subject=deb.li">Contact</a>
 					</div>
 				</div>

@@ -105,3 +105,6 @@ def get_url(key):
         return url
     return None
 
+def count(is_static=False):
+    return db.count(is_static)
+

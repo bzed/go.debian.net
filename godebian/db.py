@@ -131,3 +131,9 @@ def add_url(url, static_id=None, log=None):
     session.close()
     return id
 
+def count(is_static=False):
+    session = _Session()
+    count = session.query(Url).filter(Url.is_static == is_static).count()
+    session.close()
+    return count
+
