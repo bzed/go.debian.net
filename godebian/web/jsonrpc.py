@@ -30,6 +30,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import anyjson
 import sys
+import traceback
 
 _JSONMETHODS = {}
 
@@ -43,7 +44,6 @@ def jsondispatch(data):
         rawdata = anyjson.deserialize(data)
     except SyntaxError:
         return None
-
     id = rawdata.get('id', 0)
     retDict = { 'id' : id , 'error' : None }
 
@@ -62,6 +62,7 @@ def jsondispatch(data):
     try:
         retDict['result'] = handler(*params)
     except:
+        traceback.print_exc(file=sys.stdout)
         retDict['error'] = "%s:%s" % (sys.exc_type, sys.exc_value)
     finally:
         return anyjson.serialize(retDict)
