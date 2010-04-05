@@ -30,7 +30,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import cgi
 import os
-from bottle import jinja2_view, jinja2_template, route, redirect, request, debug, send_file, HTTPError, HTTP_CODES
+
+from .bottle import jinja2_view, jinja2_template, route, redirect, request, debug, send_file, HTTPError, HTTP_CODES
 
 from ..manage import get_url, add_url, add_static_url
 from ..config import BottleConfig, UrlencoderConfig
