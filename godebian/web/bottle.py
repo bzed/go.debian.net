@@ -161,7 +161,7 @@ class HTTPError(HTTPResponse):
         self.traceback = traceback
 
     def __repr__(self):
-        return ''.join(ERROR_PAGE_TEMPLATE.render(e=self, url=cgi.escape(request.url)))
+        return ''.join(ERROR_PAGE_TEMPLATE.render(e=self, url=cgi.escape(request.url), debug=True))
 
 
 
@@ -686,13 +686,12 @@ class Request(threading.local, DictMixin):
                 fb = TextIOWrapper(self.body, encoding='ISO-8859-1')
             else:
                 fb = self.body
+            print self.body.getvalue()
             data = cgi.FieldStorage(fp=fb, environ=save_env, keep_blank_values=True)
             self._POST = MultiDict()
             if data.list:
                 for item in data.list:
                     self._POST[item.name] = item if item.filename else item.value
-            else:
-                self._POST[data.value] = None
         return self._POST
 
     @property
@@ -1637,7 +1636,7 @@ HTTP_CODES = {
 
 ERROR_PAGE_TEMPLATE = SimpleTemplate("""
 %import cgi
-%from bottle import DEBUG, HTTP_CODES
+%from bottle import HTTP_CODES
 %status_name = HTTP_CODES.get(e.status, 'Unknown').title()
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html>
@@ -1648,11 +1647,11 @@ ERROR_PAGE_TEMPLATE = SimpleTemplate("""
         <h1>Error {{e.status}}: {{status_name}}</h1>
         <p>Sorry, the requested URL <tt>{{url}}</tt> caused an error:</p>
         <pre>{{cgi.escape(str(e.output))}}</pre>
-        %if DEBUG and e.exception:
+        %if debug and e.exception:
           <h2>Exception:</h2>
           <pre>{{cgi.escape(repr(e.exception))}}</pre>
         %end
-        %if DEBUG and e.traceback:
+        %if debug and e.traceback:
           <h2>Traceback:</h2>
           <pre>{{cgi.escape(e.traceback)}}</pre>
         %end
