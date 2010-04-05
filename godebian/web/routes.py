@@ -126,7 +126,7 @@ def rpc_json():
     remote_address = request.environ['REMOTE_ADDR']
     if not _check_access(remote_address):
         abort(401)
-    return jsondispatch(request.POST.keys()[0])
+    return jsondispatch(request.body.getvalue())
 
 @jsonmethod('add_url')
 def json_add_url(url):
