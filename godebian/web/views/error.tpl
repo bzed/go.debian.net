@@ -6,4 +6,15 @@
 <pre>
 	{{ error_message }}
 </pre>
+{% if debug %}
+<pre>
+{% if traceback is defined %}
+{{ traceback }}
+{% endif %}
+
+{% if exception is defined %}
+{{ exception }}
+{% endif %}
+</pre>
+{% endif %}
 {% endblock %}

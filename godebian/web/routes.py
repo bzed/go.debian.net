@@ -28,6 +28,7 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
+import cgi
 import os
 from bottle import jinja2_view, jinja2_template, route, redirect, request, debug, send_file, HTTPError, HTTP_CODES
 
@@ -53,10 +54,15 @@ class NiceHTTPError(HTTPError):
     def __str__(self):
         kargs = {
                     'status' : self.http_status,
-                    'url' : request.path,
+                    'url' : request.url,
                     'error_name' : HTTP_CODES.get(self.http_status, 'Unknown').title(),
-                    'error_message' : ''.join(self.output)
+                    'error_message' : cgi.escape(''.join(self.output)),
+                    'debug' : BottleConfig.debug
                 }
+        if self.traceback:
+            kargs['traceback'] = cgi.escape(str(self.traceback))
+        if self.exception:
+            kargs['exception'] = cgi.escape(str(self.excetion))
         return template('error', **kargs)
 
 def abort(code=500, text='Unknown Error: Appliction stopped.'):
