@@ -63,6 +63,7 @@ def jsondispatch(data):
         retDict['result'] = handler(*params)
     except:
         traceback.print_exc(file=sys.stdout)
+        retDict['result'] = None
         retDict['error'] = "%s:%s" % (sys.exc_type, sys.exc_value)
     finally:
         return anyjson.serialize(retDict)
