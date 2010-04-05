@@ -87,7 +87,7 @@ def static_file(filename):
 
 @route('/robots.txt')
 def static_file(filename):
-    send_file('robots.txt, root=BottleConfig.static_dir)
+    send_file('robots.txt', root=BottleConfig.static_dir)
 
 
 @route('/:key#[' + UrlencoderConfig.alphabet + ']+#')
