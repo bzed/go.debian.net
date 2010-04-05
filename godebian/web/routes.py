@@ -117,6 +117,10 @@ def redirect_by_key_with_preview(key):
         'url' : url
     }
 
+@route('/:msgid#.+@.+#')
+def redirect_to_lists_debian_org(msgid):
+    redirect('http://lists.debian.org/%s' %(msgid, ))
+
 @route('/rpc/json', method='POST')
 def rpc_json():
     remote_address = request.environ['REMOTE_ADDR']
