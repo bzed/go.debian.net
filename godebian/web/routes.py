@@ -85,6 +85,10 @@ def imprint():
 def static_file(filename):
     send_file(filename, root=BottleConfig.static_dir)
 
+@route('/robots.txt')
+def static_file(filename):
+    send_file('robots.txt, root=BottleConfig.static_dir)
+
 
 @route('/:key#[' + UrlencoderConfig.alphabet + ']+#')
 def redirect_by_key(key):
