@@ -40,7 +40,7 @@ graph_info This graphs shows statistics of the number of URLs stored in deb.li.
 graph_order dynamic custom
 dynamic.label dynamically generated ShortURLs
 custom.label custom ShortURLs
-dynamic.draw STACK
+dynamic.draw AREA
 custom.draw STACK
 dynamic.info ShortURLs which were automatically generated while inserting a new URL.
 custom.info Custom ShortURL which was assigned on request."""
