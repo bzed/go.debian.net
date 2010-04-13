@@ -52,7 +52,7 @@ def template(tpl_name, **kargs):
 
 
 class NiceHTTPError(HTTPError):
-    def __str__(self):
+    def __repr__(self):
         kargs = {
                     'status' : self.http_status,
                     'url' : request.path,
