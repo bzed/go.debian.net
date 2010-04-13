@@ -25,10 +25,10 @@ img {
 }
 
 .container-outer {
+	margin-top: 10px;
 	width: 750px;
 	margin: auto;
-	border-left: 1px #fff solid;
-	border-right: 1px #fff solid;
+	border: 1px #fff solid;
 }
 
 .container-inner {
