@@ -55,12 +55,20 @@ img {
 	padding: 10px 10px 10px 10px;
 }
 
-.menu-inner {
+.menu-outer {
 	background-color: #aaa;
+}
+
+.menu-inner {
+	padding-left: 10px;
 }
 
 .body-outer {
 	min-height: 170px;
+}
+
+.body-content {
+	padding: 5px 5px 5px 5px;
 }
 
 .footer-inner {
