@@ -18,10 +18,18 @@ a {
 	text-decoration: none;
 }
 
+img {
+	border: 0px;
+}
+
+.container-outer {
+	width: 750px;
+	border-left: 1px #fff solid;
+	border-right: 1px #fff solid;
+}
+
 .container-inner {
-	width: 84%;
-	margin-left: 8%;
-	margin-right: 8%;
+	width: 750px;
 	background-color: white;
 }
 
