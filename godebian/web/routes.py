@@ -54,7 +54,7 @@ def template(tpl_name, **kargs):
 class NiceHTTPError(HTTPError):
     def __repr__(self):
         kargs = {
-                    'status' : self.status
+                    'status' : self.status,
                     'url' : request.path,
                     'error_name' : HTTP_CODES.get(self.http_status, 'Unknown').title(),
                     'error_message' : cgi.escape(''.join(self.output)),
