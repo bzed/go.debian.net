@@ -28,6 +28,8 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
+import hashlib
+
 from .config import MemcachedConfig
 
 try:
@@ -40,7 +42,15 @@ class MemCacheClass(object):
         self._client = memcache.Client(servers)
         self._timeout = timeout
         self._prefix = prefix
-        self._pkey = lambda x: "%s:%s" %(prefix, x)
+
+    def _pkey(self, key):
+        """ Add prefix to the key and return the md5 hexdigest value of it.
+        This allowed to use types != str as key - memcached is able to
+        handle str only.
+        """
+        m = hashlib.md5()
+        m.update("%s:%s" %(self._prefix, key))
+        return str(m.hexdigest())
 
     def add(self, key, value):
         return self._client.add(self._pkey(key), value, self._timeout)

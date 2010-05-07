@@ -29,16 +29,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 try:
-    from godebian.web.routes import *
+    from godebian.web import app as application
 except ImportError:
     import sys
     import os
     sys.path = [os.path.realpath(os.path.dirname(__file__))] + sys.path
-    from godebian.web.routes import *
-
-from godebian.web import bottle
-
-application = bottle.default_app()
+    from godebian.web import app as application
 
 if __name__ == '__main__':
     from flup.server.fcgi import WSGIServer

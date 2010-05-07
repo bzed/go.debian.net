@@ -97,12 +97,16 @@ def get_url(key):
         return None
     url = MemCache.get(key)
     if url:
+        if url == '__none__':
+            return None
         return url
     id = decode_url(key)
     url = db.get_url(id)
     if url:
         MemCache.set(key, url)
         return url
+    else:
+        MemCache.set(key, '__none__')
     return None
 
 def count(is_static=False):

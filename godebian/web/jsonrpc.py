@@ -28,7 +28,11 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-import anyjson
+try:
+    from .flask import json
+except ImportError:
+    from flask import json
+
 import sys
 import traceback
 
@@ -41,7 +45,7 @@ def jsonmethod(methodname):
 
 def jsondispatch(data):
     try:
-        rawdata = anyjson.deserialize(data)
+        rawdata = json.loads(data)
     except SyntaxError:
         print "SyntaxError in data: %s" %(data, )
         return None
@@ -70,5 +74,5 @@ def jsondispatch(data):
         retDict['result'] = None
         retDict['error'] = "%s:%s" % (sys.exc_type, sys.exc_value)
     finally:
-        return anyjson.serialize(retDict)
+        return retDict
 

@@ -30,24 +30,20 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 
-from godebian.web.routes import *
-from godebian.web.bottle import run
-
 import sys
 
-def runserver(host='localhost', port=8080):
-    try:
-        from godebian.web.bottle import PasteServer
-    except ImportError:
-        run(host=host, port=port)
-    else:
-        run(host=host, port=port, server=PasteServer)
+try:
+    from godebian.web import app
+except ImportError:
+    import sys
+    import os
+    sys.path = [os.path.realpath(os.path.dirname(__file__))] + sys.path
+    from godebian.web import app
 
 if __name__ == '__main__':
-
     if len(sys.argv) > 1:
         host, port = sys.argv[1:]
-        runserver(host, port)
+        app.run(host=host, port=port)
     else:
-        runserver()
+        app.run()
 

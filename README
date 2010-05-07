@@ -2,13 +2,12 @@
 Dependencies:
 -------------
 
+Python 2.6 or python-simplejson
 python-application
-python-anyjson and one json implementation - python-cjson for example
-python-bottle (>= 0.6.4)
+python-flask (>= 0.2)
 python-sqlalchemy (>= 0.5)
 python-psycopg2
 python-pylibmc or python-memcache
-python-mako
 
 In case you want to use fcgi:
 python-flup
