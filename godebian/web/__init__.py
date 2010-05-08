@@ -183,7 +183,7 @@ def show_errormessage(error):
         'name' : error.name,
         'description' : error.get_description(flask.request.environ)
     }
-    return flask.render_template('error.html', **template_data)
+    return flask.render_template('error.html', **template_data), error.code
 
 def _assign_errorhandler(i):
     app.error_handlers[i] = show_errormessage
