@@ -89,6 +89,8 @@ class RawRequest(flask.Request):
         if content_length is not None:
             stream = werkzeug.wsgi.LimitedStream(self.environ['wsgi.input'],
                                                  content_length)
+        else:
+            raise werkzeug.exceptions.LengthRequired
         data = (stream, cls(), cls())
         d = self.__dict__
         d['stream'], d['form'], d['files'] = data
@@ -143,6 +145,14 @@ def redirect_by_key_with_preview(key):
 def redirect_to_lists_debian_org(msgid):
     return flask.redirect('http://lists.debian.org/%s' %(msgid, ))
 
+@app.route('/stats.html')
+def statistics():
+    return flask.render_template('statistics.html',
+        static_urls=count(is_static=True),
+        non_static_urls=count(is_static=False))
+
+
+
 @app.route('/rpc/json', methods=['POST'])
 def rpc_json():
     remote_address = flask.request.environ['REMOTE_ADDR']
@@ -155,12 +165,6 @@ def rpc_json():
         return flask.abort(400)
     return flask.jsonify(**result)
 
-@app.route('/stats.html')
-def statistics():
-    return flask.render_template('statistics.html',
-        static_urls=count(is_static=True),
-        non_static_urls=count(is_static=False))
-
 @jsonmethod('add_url')
 def json_add_url(url):
     return add_url(url, log=flask.request.environ['REMOTE_ADDR'])
@@ -172,4 +176,19 @@ def json_add_static_url(url, key):
 @jsonmethod('get_url')
 def json_get_url(key):
     return get_url(key)
+
+
+def show_errormessage(error):
+    template_data = { 
+        'code' : error.code,
+        'name' : error.name,
+        'description' : error.get_description(flask.request.environ)
+    }
+    return flask.render_template('error.html', **template_data)
+
+def _assign_errorhandler(i):
+    app.error_handlers[i] = show_errormessage
+map(_assign_errorhandler,
+    werkzeug.exceptions.default_exceptions.iterkeys())
+del _assign_errorhandler
 
