@@ -159,7 +159,6 @@ def rpc_json():
     if not _check_access(remote_address):
         return flask.abort(401)
     flask.request.use_raw_stream = True
-    print flask.request.data
     result = jsondispatch(flask.request.data)
     if result == None:
         return flask.abort(400)
