@@ -17,10 +17,10 @@
 	<div id="hd">
 		<div class="header">
 			<img id="header-logo" src="/static/openlogo-nd-50.png" alt="debian.org"/>
-			<span id="header-title"><h1>deb.li: Debian ShortURL Service</h1></span>
-			<span id="header-subtitle">
+			<div id="header-title"><h1>deb.li: Debian ShortURL Service</h1></div>
+			<div id="header-subtitle">
 				<h2>{% block header_subtitle %}{{ title }}{% endblock %}</h2>
-			</span>
+			</div>
 		</div>
 		<div class="menu">
 			<a href="/">Home</a> |
@@ -51,7 +51,7 @@
                	</div>
         </div>
        	<div id="ft">
-		<p>Running
+		<span id="running_on">Running
 		<a href="http://bzed.de">Bernd Zeimetz'</a>
 		<a href="http://git.recluse.de/?p=debian/go.debian.net.git">godebian</a>
 		software, using
@@ -59,8 +59,8 @@
 		<a href="http://flask.pocoo.org/">Flask</a> and 
 		<a href="http://werkzeug.pocoo.org/">Werkzeug</a>, 
 		<a href="http://www.sqlalchemy.org/">SQLAlchemy</a> and 
-		<a href="http://www.postgresql.org/">PostgreSQL</a></p>
-		<p>
+		<a href="http://www.postgresql.org/">PostgreSQL</a></span>
+		<span id="buttons">
 		<a href="http://www.debian.org/">
 		  <img src="/static/button-debian.png" alt="debian.org"/>
 		</a>
@@ -72,7 +72,7 @@
 		</a>
 		<a href="http://www.credativ.de">
 		  <img src="/static/button-credativ.png" alt="credativ GmbH" />
-		</a>
+		</a></span>
         </div>
 </div>
 </body>
