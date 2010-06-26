@@ -43,7 +43,7 @@ except ImportError:
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         host, port = sys.argv[1:]
-        app.run(host=host, port=port)
+        app.run(host=host, port=int(port))
     else:
         app.run()
 

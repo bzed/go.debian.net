@@ -40,8 +40,12 @@ _metadata = MetaData()
 
 _URL_ID_TYPE = Integer
 if DatabaseConfig.connection.startswith('postgres'):
-    from sqlalchemy.databases.postgres import PGBigInteger
-    _URL_ID_TYPE = PGBigInteger
+    try:
+        from sqlalchemy.databases.postgres import PGBigInteger
+        _URL_ID_TYPE = PGBigInteger
+    except ImportError:
+        from sqlalchemy.databases import postgresql
+        _URL_ID_TYPE = postgresql.BIGINT
 
 _URL_TABLE = 'godebian_urls'
 _URL_ID_SEQ = 'url_id_seq'
