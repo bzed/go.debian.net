@@ -55,6 +55,6 @@ if _servers[0].lower() != 'none':
                           default_timeout=_timeout,
                           key_prefix=_prefix)
 else:
-    MemCache = FakeMemCache
+    MemCache = FakeMemCache()
 __all__ = ["MemCache"]
 
