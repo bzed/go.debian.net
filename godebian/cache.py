@@ -29,7 +29,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import hashlib
-from  werkzeug.contrib.cache import MemcachedCache
 from .config import MemcachedConfig
 
 try:
@@ -37,24 +36,19 @@ try:
 except ImportError:
     import memcache
 
-class FakeMemCache(object):
-    def __init__(*args, **kwargs):
-        pass
-    def set(*args, **kwargs):
-        pass
-    def get(*args, **kwargs):
-        return None
-
 _servers = MemcachedConfig.servers.split(';')
 _timeout = MemcachedConfig.timeout
 _prefix = MemcachedConfig.prefix
 
 if _servers[0].lower() != 'none':
+    from  werkzeug.contrib.cache import MemcachedCache
     _client = memcache.Client(_servers)
     MemCache = MemcachedCache(_client,
                           default_timeout=_timeout,
                           key_prefix=_prefix)
 else:
-    MemCache = FakeMemCache()
+    from  werkzeug.contrib.cache import NullCache
+    MemCache = NullCache()
+
 __all__ = ["MemCache"]
 
