@@ -43,7 +43,7 @@ class FakeMemCache(object):
     def set(*args, **kwargs):
         pass
     def get(*args, **kwargs):
-        pass
+        return None
 
 _client = memcache.Client(MemcachedConfig.servers.split(';'))
 _timeout = MemcachedConfig.timeout
