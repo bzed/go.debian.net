@@ -37,11 +37,23 @@ try:
 except ImportError:
     import memcache
 
+class FakeMemCache(object):
+    def __init__(*args, **kwargs):
+        pass
+    def set(*args, **kwargs):
+        pass
+    def get(*args, **kwargs):
+        pass
+
 _client = memcache.Client(MemcachedConfig.servers.split(';'))
 _timeout = MemcachedConfig.timeout
 _prefix = MemcachedConfig.prefix
-MemCache = MemcachedCache(_client,
+
+if _client != 'None':
+    MemCache = MemcachedCache(_client,
                           default_timeout=_timeout,
                           key_prefix=_prefix)
+else:
+    MemCache = FakeMemCache
 __all__ = ["MemCache"]
 
