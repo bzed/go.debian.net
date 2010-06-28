@@ -45,11 +45,12 @@ class FakeMemCache(object):
     def get(*args, **kwargs):
         return None
 
-_client = memcache.Client(MemcachedConfig.servers.split(';'))
+_servers = MemcachedConfig.servers.split(';')
 _timeout = MemcachedConfig.timeout
 _prefix = MemcachedConfig.prefix
 
-if _client.lower() != 'none':
+if _servers.lower() != 'none':
+    _client = memcache.Client(_servers)
     MemCache = MemcachedCache(_client,
                           default_timeout=_timeout,
                           key_prefix=_prefix)
