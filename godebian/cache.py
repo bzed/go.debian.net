@@ -49,7 +49,7 @@ _client = memcache.Client(MemcachedConfig.servers.split(';'))
 _timeout = MemcachedConfig.timeout
 _prefix = MemcachedConfig.prefix
 
-if _client != 'None':
+if _client.lower() != 'none':
     MemCache = MemcachedCache(_client,
                           default_timeout=_timeout,
                           key_prefix=_prefix)
