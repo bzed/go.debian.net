@@ -31,10 +31,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import hashlib
 from .config import MemcachedConfig
 
-try:
-    import pylibmc as memcache
-except ImportError:
-    import memcache
+# pylibmc seems to be buggy, for whatever reason - since libmemcached5
+#try:
+#    import pylibmc as memcache
+#except ImportError:
+
+import memcache
 
 _servers = MemcachedConfig.servers.split(';')
 _timeout = MemcachedConfig.timeout
