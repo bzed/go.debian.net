@@ -28,6 +28,8 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
+import urllib
+
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, \
                         Sequence, Boolean, and_, func, DateTime, Text
 from sqlalchemy.orm import mapper, sessionmaker
@@ -61,7 +63,7 @@ _metadata.create_all(_engine)
 
 class Url(object):
     def __init__(self, url, id, is_static=False, log=None):
-        self.url = url
+        self.url = urllib.unquote(url)
         self.id = id
         self.is_static = is_static
         self.log = log
