@@ -109,7 +109,7 @@ def add_url(url, static_id=None, log=None):
             if so return the id of the existing entry. If not,
             find the next unused id.
         """
-        id_query = session.query(Url.id).filter(and_(Url.url == url, 
+        id_query = session.query(Url.id).filter(and_(Url.url == urllib.unquote(url),
                                                Url.is_static == False))[:1]
         if id_query:
             _abort_session(session)
