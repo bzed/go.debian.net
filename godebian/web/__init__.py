@@ -140,7 +140,7 @@ def redirect_by_key_with_preview(key):
     return flask.render_template('redirect-preview.html',
         domain=FlaskConfig.domain,
         key=key,
-        url=url, url_quoted=urllib.quote(fullurl, safe="%/:=&?~#+!$,;'@()*[]"))
+        url=url, url_quoted=urllib.quote(url, safe="%/:=&?~#+!$,;'@()*[]"))
 
 @app.route('/<re(regex=r".+@.+"):msgid>')
 def redirect_to_lists_debian_org(msgid):
