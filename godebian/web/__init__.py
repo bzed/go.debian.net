@@ -30,6 +30,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import cgi
 import os
+import urllib
 
 from ..manage import get_url, add_url, add_static_url, count
 from ..config import FlaskConfig, UrlencoderConfig
@@ -139,7 +140,7 @@ def redirect_by_key_with_preview(key):
     return flask.render_template('redirect-preview.html',
         domain=FlaskConfig.domain,
         key=key,
-        url=url)
+        url=url, url_quoted=urllib.quote(fullurl, safe="%/:=&?~#+!$,;'@()*[]"))
 
 @app.route('/<re(regex=r".+@.+"):msgid>')
 def redirect_to_lists_debian_org(msgid):
