@@ -128,7 +128,7 @@ def imprint():
 def redirect_by_key(key):
     url = get_url(key)
     if url:
-        return flask.redirect(url)
+        return flask.redirect(urllib.quote(url, safe="%/:=&?~#+!$,;'@()*[]").encode('ascii'))
     else:
         return flask.abort(404)
 
