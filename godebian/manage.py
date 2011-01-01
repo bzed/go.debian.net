@@ -61,6 +61,10 @@ class AddStaticUrlException(ManagementException):
     def get_alternate_key(self):
         return self.alternate_key
 
+class UpdateStaticUrlException(ManagementException):
+    def __str__(self):
+        return "The custom alias you've chosen could not be updated. Please try again later.\n"
+
 class InvalidUrlException(ManagementException):
     def __init__(self, url):
         self.url = url
@@ -91,6 +95,18 @@ def add_static_url(url, key, log=None):
     MemCache.set(key, url)
     return key
 
+def update_static_url(url, key, log=None)
+    if not _url_valid(url):
+        raise InvalidUrlException(url)
+    if not _key_valid(key):
+        raise AddStaticUrlException(key)
+    id = decode_url(key)
+    try:
+        db.update_url(url, id, log=log)
+    except db.DbException:
+        raise UpdateStaticUrlException(key)
+    MemCache.set(key, url)
+    return key
 
 def get_url(key):
     if not _key_valid(key):

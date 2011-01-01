@@ -137,6 +137,28 @@ def add_url(url, static_id=None, log=None):
     session.close()
     return id
 
+def update_url(url, static_id, log=None):
+    def _update_url_in_session(session, url, id, log=None):
+        url_obj = session.query(Url).filter_by(id=id).filter_by(is_static=True)
+        url_obj.url = url
+
+    def _abort_session(session):
+        session.rollback()
+        session.close()
+
+    session = _Session()
+    try:
+        _update_url_in_session(session, url, id, True, log)
+    except IntegrityError:
+        _abort_session(session)
+        raise DbIdExistsException(id, url)
+    except DataError:
+        _abort_session(session)
+        raise DbIdOutOfRangeException(id, url)
+    session.commit()
+    session.close()
+    return id
+
 def count(is_static=False):
     session = _Session()
     count = session.query(Url).filter(Url.is_static == is_static).count()
