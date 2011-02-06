@@ -95,7 +95,7 @@ def add_static_url(url, key, log=None):
     MemCache.set(key, url)
     return key
 
-def update_static_url(url, key, log=None)
+def update_static_url(url, key, log=None):
     if not _url_valid(url):
         raise InvalidUrlException(url)
     if not _key_valid(key):
