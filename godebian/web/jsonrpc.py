@@ -58,14 +58,14 @@ def jsondispatch(data):
     method = rawdata.get('method', None)
     if not method:
         retDict['error'] = 'method missing in request'
-        return anyjson.serialize(retDict)
+        return json.dumps(retDict)
 
     params = rawdata.get('params', [])
 
     handler = _JSONMETHODS.get(method, None)
     if not handler:
         retDict['error'] = 'unknown method'
-        return anyjson.serialize(retDict)
+        return json.dumps(retDict)
 
     try:
         retDict['result'] = handler(*params)
