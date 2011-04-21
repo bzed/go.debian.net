@@ -32,7 +32,7 @@ import cgi
 import os
 import urllib
 
-from ..manage import get_url, add_url, add_static_url, count
+from ..manage import get_url, add_url, add_static_url, update_static_url, count
 from ..config import FlaskConfig, UrlencoderConfig
 
 from .jsonrpc import jsonmethod, jsondispatch
@@ -172,6 +172,10 @@ def json_add_url(url):
 @jsonmethod('add_static_url')
 def json_add_static_url(url, key):
     return add_static_url(url, key, log=flask.request.environ['REMOTE_ADDR'])
+
+@jsonmethod('update_static_url')
+def json_update_static_url(url, key):
+    return update_static_url(url, key, log=flask.request.environ['REMOTE_ADDR'])
 
 @jsonmethod('get_url')
 def json_get_url(key):

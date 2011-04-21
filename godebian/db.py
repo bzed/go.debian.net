@@ -139,8 +139,9 @@ def add_url(url, static_id=None, log=None):
 
 def update_url(url, static_id, log=None):
     def _update_url_in_session(session, url, id, log=None):
-        url_obj = session.query(Url).filter_by(id=id).filter_by(is_static=True)
+        url_obj = session.query(Url).filter_by(id=id).filter_by(is_static=True).first()
         url_obj.url = url
+        session.flush()
 
     def _abort_session(session):
         session.rollback()
@@ -148,7 +149,7 @@ def update_url(url, static_id, log=None):
 
     session = _Session()
     try:
-        _update_url_in_session(session, url, id, True, log)
+        _update_url_in_session(session, url, static_id, log)
     except IntegrityError:
         _abort_session(session)
         raise DbIdExistsException(id, url)
