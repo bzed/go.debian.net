@@ -156,8 +156,9 @@ def statistics():
 
 @app.route('/rpc/json', methods=['POST'])
 def rpc_json():
-    if flask.request.environ.has_key['HTTP_X_FORWARDED_FOR']:
-        remote_address = flask.request.environ['HTTP_X_FORWARDED_FOR']
+    if flask.request.environ['HTTP_X_FORWARDED_FOR']:
+        remote_addresses = flask.request.environ['HTTP_X_FORWARDED_FOR']
+        remote_address = remote_addresses.split(', ')[0]
     else:
         remote_address = flask.request.remote_addr
     if not _check_access(remote_address):
