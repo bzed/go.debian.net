@@ -153,10 +153,16 @@ def statistics():
         non_static_urls=count(is_static=False))
 
 
+def __remote_address__():
+    try:
+        remote_address = flask.request.headers.getlist("X-Forwarded-For")[0]
+    except Exception, e:
+        remote_address = flask.request.remote_addr
+    return remote_address
 
 @app.route('/rpc/json', methods=['POST'])
 def rpc_json():
-    remote_address = flask.request.remote_addr
+    remote_address = __remote_address__()
     if not _check_access(remote_address):
         return flask.abort(401)
     flask.request.use_raw_stream = True
@@ -167,15 +173,15 @@ def rpc_json():
 
 @jsonmethod('add_url')
 def json_add_url(url):
-    return add_url(url, log=flask.request.environ['REMOTE_ADDR'])
+    return add_url(url, log=__remote_address__())
 
 @jsonmethod('add_static_url')
 def json_add_static_url(url, key):
-    return add_static_url(url, key, log=flask.request.environ['REMOTE_ADDR'])
+    return add_static_url(url, key, log=__remote_address__())
 
 @jsonmethod('update_static_url')
 def json_update_static_url(url, key):
-    return update_static_url(url, key, log=flask.request.environ['REMOTE_ADDR'])
+    return update_static_url(url, key, log=__remote_address__())
 
 @jsonmethod('get_url')
 def json_get_url(key):
