@@ -1,11 +1,6 @@
 {% extends "base-news.html" %}
-
-{% block extra_heads %}
-	{% if google_site_verification is string %}
-		<meta name="google-site-verification" content="{{ google_site_verification }}" />
-	{% endif %}
-{% endblock %}
-
-{% block body %}
+{% block title %}Welcome!{% endblock %}
+{% block column_left %}
+<h2>Welcome!</h2>
 <p>Welcome to <a href="http://deb.li">deb.li</a>, the <a href="http://www.debian.org">Debian</a> ShortURL Service.</p>
 {% endblock %}

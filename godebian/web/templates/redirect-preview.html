@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Preview of {{ domain }}/{{ key }}{% endblock %}
 
-{% block header_subtitle %}Preview of {{ domain }}/{{ key }}{% endblock %}
 
-{% block body %}
-<p>This {{ domain }} URL redirects to</p>
-<p class="url-preview"><a href="{{ url_quoted }}">{{ url }}</a></p>
-<p><a href="{{ url_quoted }}">Proceed to this site.</a></p>
+{% block column_left %}
+<h2>Preview of {{ domain }}/{{ key }}</h2>
+<ul class="nolist">
+<li>This {{ domain }} URL redirects to</li>
+<li><a href="{{ url_quoted }}">{{ url }}</a></li>
+<li><a href="{{ url_quoted }}">Proceed to this site.</a></li>
+</ul>
 {% endblock %}
 

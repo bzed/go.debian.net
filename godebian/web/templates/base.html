@@ -1,92 +1,149 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-	<title>deb.li: Debian ShortURL Service - {% block title %}{{ title }}{% endblock %}</title>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="/static/yui-reset-fonts-grids.css" />
-	<link rel="stylesheet" type="text/css" href="/static/yui-base.css" />
-<!--	<link rel="stylesheet" type="text/css" href="/static/style.css" /> -->
-	<link rel="shortcut icon" href="/static/favicon.ico" /> 
-	{% block extra_heads %}
-	{% endblock %}
+	<!--
+	This head element is reduced to simplify the template. Add appropriate
+	markup to your site.
+	-->
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <title>deb.li: Debian ShortURL Service - {% block title %}{% endblock %}</title>
+	<link rev="made" href="mailto:bzed@debian.org">
+	<link href="/static/debhandheld.css" media="screen" rel="stylesheet" type="text/css">
+	<link href="/static/debian.css" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="/static/favicon.ico" />
 </head>
+
 <body>
-<div id="doc3" class="yui-t7">
-	<div id="hd">
-		<div class="header">
-			<img id="header-logo" src="/static/openlogo-nd-50.png" alt="debian.org"/>
-			<div id="header-title"><h1>deb.li: Debian ShortURL Service</h1></div>
-			<div id="header-subtitle">
-				<h2>{% block header_subtitle %}{{ title }}{% endblock %}</h2>
-			</div>
-		</div>
-		<div class="menu">
-			<a href="/">Home</a> |
-			<a href="http://wiki.debian.org/deb.li">Documentation</a> |
-			<a href="/stats.html">Statistics</a> |
-			<a href="/imprint.html">Imprint/Impressum</a> |
-			<a href="mailto:bzed@debian.org?subject=deb.li">Contact</a>
-		</div>
-	</div>
-	<div id="bd">
-                <div id="yui-main">
-       	                <div class="yui-b">
-               	                <div class="yui-gc">
-                       	                <div class="yui-u first">
-						{% block body %}
-						{% endblock %}
-                                       	</div>
-					<div class="yui-u">
-						{% block sidebar %}
-						{% endblock %}
-                                       	</div>
-                               	</div>
-                       	</div>
-               	</div>
-               	<div class="yui-b">
-			{% block footer_content %}
-			{% endblock %}
-               	</div>
-        </div>
-       	<div id="ft">
-		<span id="running_on">Running
-		<a href="http://bzed.de">Bernd Zeimetz'</a>
-		<a href="http://git.recluse.de/?p=debian/go.debian.net.git">godebian</a>
-		software, using
-		<a href="http://www.python.org/">Python</a>, 
-		<a href="http://flask.pocoo.org/">Flask</a> and 
-		<a href="http://werkzeug.pocoo.org/">Werkzeug</a>, 
-		<a href="http://www.sqlalchemy.org/">SQLAlchemy</a> and 
-		<a href="http://www.postgresql.org/">PostgreSQL</a></span>
-	        <br />
-		<span id="buttons">
-		<a href="http://www.debian.org/">
-		  <img src="/static/button-debian.png" alt="debian.org"/>
-		</a>
-		<a href="http://jigsaw.w3.org/css-validator/check/referer">
-		  <img src="/static/button-css.png" alt="valid CSS"/>
-		</a>
-		<a href="http://validator.w3.org/check/referer">
-		  <img src="/static/button-xhtml.png" alt="valid XHTML"/>
-		</a>
-		<a href="http://www.credativ.de">
-		  <img src="/static/button-credativ.png" alt="credativ GmbH" />
-		</a></span>
-        </div>
+
+<p class="hidecss">
+<!--
+Skip navigation for text only browsers
+-->
+<a href="#content">Skip Navigation</a></p>
+
+<div id="header">
+<div id="upperheader">
+  <div id="logo">
+	<!--
+	Do not change the link or logo
+	-->
+	<a href="/" title="Debian Home"><img src= "/static/pics/openlogo-50.png"
+		alt="Debian" width="50" height= "61"></a>
+  </div><!-- end logo -->
+
+  <p class="section">
+  <!--
+  The section flag should be the site name highlighting the potential
+  change of top nav links
+  -->
+  deb.li</p>
+
+  <div id="searchbox">
+	<!--
+	If your site has search functionality replace below with the correct
+	form.  For complex search with multiple choices consider using the body
+	of the page or providing a simple initial search with the ability to
+	refine on the results page. 
+	-->
+  </div><!-- end searchbox -->
+
+</div><!-- end upperheader -->
+
+<div id="navbar">
+  <!-- 
+  The navbar links below can be changed to site specific links.
+  -->
+  <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="http://wiki.debian.org/deb.li">Documentation</a></li>
+      <li><a href="/stats.html">Statistics</a></li>
+      <li><a href="/imprint.html">Imprint/Impressum</a></li>
+      <li><a href="mailto:bzed@debian.org?subject=deb.li">Contact</a></li>
+  </ul>
+</div><!-- end navbar -->
+
+<p id="breadcrumbs">
+<!--
+The breadcrumbs should always start with a slash followed by of the
+sub-domain name. Try to make your back end produce correct breadcrumbs
+Always leave one space between the slash and the link.
+-->
+{% block breadcrumbs %}{% endblock %}
+</p>
+
+</div><!-- end header -->
+
+<div id="content">
+<span class="relatedpages">
+	<!--
+	A short list of related or "sibling" pages. Keep this list short, relevant and consistent
+	-->
+{% block related_pages %}
+<a href="http://www.debian.org/"><img src="/static/button-debian.png" alt="debian.org"/></a>
+<a href="http://jigsaw.w3.org/css-validator/check/referer"><img src="/static/button-css.png" alt="valid CSS"/></a>
+<a href="http://validator.w3.org/check/referer"><img src="/static/button-xhtml.png" alt="valid XHTML"/></a>
+{% endblock %}
+</span><!-- end relatedpages -->
+
+<h1>
+	<!-- 
+	Start the content with a short descriptive h1 heading
+	-->
+	deb.li: Debian ShortURL Service</h1>
+
+    {% block annotation %}{% endblock %}
+
+{% block toc %}
+{% endblock %}
+
+<div class="line">
+	<!--
+	It's very important to use the div.line wrapping each two columns.
+	Otherwise unexpected things will happen.  
+	-->
+	<div class="col50">
+            {% block column_left %}{% endblock %}
+	</div><!-- end div.col50 -->
+
+	<div class="col50 lastcol">
+            {% block column_right %}{% endblock %}
+		<!--
+		The rightmost column must have the lastcol class 
+		-->
+	</div><!-- end div.col50.lastcol -->
+</div><!-- end div.line -->
+
+{% block body %}
+{% endblock %}
+
+</div>
+
+<div id="footer">
+    {% block footer %}
+    <p>
+            Running
+               <a href="http://bzed.de">Bernd Zeimetz'</a>
+               <a href="http://git.recluse.de/?p=debian/go.debian.net.git">godebian</a>
+               software, using
+               <a href="http://www.python.org/">Python</a>, 
+               <a href="http://flask.pocoo.org/">Flask</a> and 
+               <a href="http://werkzeug.pocoo.org/">Werkzeug</a>, 
+               <a href="http://www.sqlalchemy.org/">SQLAlchemy</a> and 
+               <a href="http://www.postgresql.org/">PostgreSQL</a>. Hosting sponsored by <a href="http://www.conova.com">conova.com - THE IT COMPANY</a>.
+    </p>
+    {% endblock %}
 </div>
 
 <!-- Piwik -->
 <script type="text/javascript">
-	var pkBaseURL = (("https:" == document.location.protocol) ? "https://stats.recluse.de/" : "http://stats.recluse.de/");
-	document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-	</script><script type="text/javascript">
-	try {
-		var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 4);
-		piwikTracker.trackPageView();
-		piwikTracker.enableLinkTracking();
-	} catch( err ) {}
+        var pkBaseURL = (("https:" == document.location.protocol) ? "https://stats.recluse.de/" : "http://stats.recluse.de/");
+        document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+        </script><script type="text/javascript">
+        try {
+                var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 4);
+                piwikTracker.trackPageView();
+                piwikTracker.enableLinkTracking();
+        } catch( err ) {}
 </script><noscript><p><img src="http://stats.recluse.de/piwik.php?idsite=4" style="border:0" alt="" /></p></noscript>
 <!-- End Piwik Tag -->
 

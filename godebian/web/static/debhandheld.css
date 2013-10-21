@@ -1,0 +1,97 @@
+@media only screen 
+and (max-width: 36em) 
+{
+	div#content {
+		margin: 0 10px 0 10px;
+	}
+	div#header {
+		margin: 0 10px 0 10px;
+		padding: 0;
+	}
+	div#logo {
+		position: relative;
+		top:0;
+		left: 0;
+		height: auto;
+		margin: 0;
+		padding: 0;
+		min-height: 0;
+	}
+	div#logo a {
+		height: auto;
+		height: 61px;
+	}
+	div#logo a img {
+		margin: 0;
+		padding: 0;
+		display: block;
+	}
+	#upperheader p.section {
+		left: 70px;
+		top: 0;
+	}
+	div#searchbox {
+		position: relative;
+		margin: -31px 0 0 60px;
+		float: right;
+		bottom: 0;
+		padding: 0;
+	}
+	div#navbar {
+		display: block;
+		position: relative;
+		clear: both;
+	}
+	#navbar ul {
+		min-height: 1.5em;
+		display: block;
+	}
+	#navbar li {
+		display: inline;
+		float: none;
+		margin: 0;
+		padding:0;
+	}
+	div#navbar a:link
+	, div#navbar a:visited {
+		display: inline;
+		margin: 0 1.5em 0 0;
+		padding:0.25em 0 0.25em 0;
+		border: 0;
+		background-color: transparent;
+	}
+	ul.toc {
+		max-width: none;
+	}
+	div#maincol {
+		margin-right: 0;
+	}
+	div.tip
+	, div.important
+	, div.warning
+	, div.note 
+	, div.trans-note {
+		overflow: hidden;
+	}
+	div#second-nav {
+		margin-left: 1em;
+		width: auto;
+	}
+	div#footer {
+		margin-left: 10px;
+	}
+	div.trans-note {
+		position: relative;
+		top: 0;
+		right: 0;
+		left: 0;
+		margin: 0;
+		background-image: none;
+		padding: 0;
+		padding-left: 1em;
+	}
+	ul.toc {
+		overflow: hidden;
+	}
+}
+

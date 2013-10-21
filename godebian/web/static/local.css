@@ -1,0 +1,8 @@
+/*
+ * Add tweaks specific to your site. Try to keep this as small as possible and
+ * do not override default settings unless absolutely necessary. Small changes
+ * will in time accumulate and result in the sites diverging. Consistency
+ * across sites is important and this includes details.
+ */
+
+@import url("debian.css");
