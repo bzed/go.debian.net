@@ -63,7 +63,7 @@ class AddStaticUrlException(ManagementException):
 
 class UpdateStaticUrlException(ManagementException):
     def __str__(self):
-        return "The custom alias you've chosen could not be updated. Please try again later.\n"
+        return "The custom alias you've chosen does not exist or the update failed for other reasons.\n"
 
 class InvalidUrlException(ManagementException):
     def __init__(self, url):
@@ -85,6 +85,7 @@ def add_static_url(url, key, log=None):
     if not _url_valid(url):
         raise InvalidUrlException(url)
     if not _key_valid(key):
+        key = add_url(url, log=log)
         raise AddStaticUrlException(key)
     id = decode_url(key)
     try:
