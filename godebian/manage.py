@@ -36,11 +36,11 @@ from . import db
 import re
 import urlparse
 
-_key_validator_re = re.compile(r'[' + UrlencoderConfig.alphabet + ']+')
+_key_validator_re = re.compile(r'^([' + UrlencoderConfig.alphabet + ']+)$')
 def _key_valid(key):
-    if _key_validator_re.match(key):
-        return True
-    return False
+    if _key_validator_re.match(key) is None:
+        return False
+    return True
 
 def _url_valid(url):
     spliturl = urlparse.urlsplit(url)
