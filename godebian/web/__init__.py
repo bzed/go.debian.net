@@ -154,10 +154,14 @@ def statistics():
 
 
 def __remote_address__():
-    try:
-        remote_address = flask.request.headers.getlist("X-Forwarded-For")[0]
-    except Exception, e:
+    uwsgi = flask.request.environ.get('uwsgi.version')
+    if uwsgi:
         remote_address = flask.request.remote_addr
+    else:
+        try:
+            remote_address = flask.request.headers.getlist("X-Forwarded-For")[0]
+        except Exception, e:
+            remote_address = flask.request.remote_addr
     return remote_address
 
 @app.route('/rpc/json', methods=['POST'])
