@@ -144,7 +144,7 @@ def redirect_by_key_with_preview(key):
 
 @app.route('/<re(regex=r".+@.+"):msgid>')
 def redirect_to_lists_debian_org(msgid):
-    return flask.redirect('http://lists.debian.org/%s' %(msgid, ))
+    return flask.redirect('http://lists.debian.org/%s' %(msgid, ), code=301)
 
 @app.route('/stats.html')
 def statistics():
