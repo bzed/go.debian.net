@@ -35,7 +35,6 @@ import sys
 try:
     from godebian.web import app
 except ImportError:
-    import sys
     import os
     sys.path = [os.path.realpath(os.path.dirname(__file__))] + sys.path
     from godebian.web import app
