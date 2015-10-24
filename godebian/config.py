@@ -33,7 +33,7 @@ import re
 
 import IPy
 
-from application.configuration import ConfigSection, ConfigSetting, datatypes
+from application.configuration import ConfigSection, ConfigSetting
 from application.process import process
 
 #swap config directories, makes more sense in our case.

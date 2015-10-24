@@ -28,8 +28,6 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-import cgi
-import os
 import urllib
 
 from ..manage import get_url, add_url, add_static_url, update_static_url, count

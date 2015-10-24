@@ -28,7 +28,6 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-import hashlib
 from .config import MemcachedConfig
 
 # pylibmc seems to be buggy, for whatever reason - since libmemcached5
