@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "Michael Fogleman, Bernd Zeimetz"
 __contact__ = "bzed@debian.org"
-__credits__ = ['http://www.michaelfogleman.com/2009/09/python-short-url-generator/']
+__credits__ = ['https://web.archive.org/web/www.michaelfogleman.com/2009/09/python-short-url-generator/']
 __license__ = """
 Copyright (C) 2009 Michael Fogleman
 Copyright (C) 2010-2013 Bernd Zeimetz <bzed@debian.org>
