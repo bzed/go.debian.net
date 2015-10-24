@@ -158,7 +158,7 @@ def __remote_address__():
     else:
         try:
             remote_address = flask.request.headers.getlist("X-Forwarded-For")[0]
-        except Exception, e:
+        except Exception:
             remote_address = flask.request.remote_addr
     return remote_address
 
