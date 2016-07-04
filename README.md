@@ -8,7 +8,7 @@ python-application
 python-flask (>= 0.2)
 python-sqlalchemy (>= 0.5)
 python-psycopg2
-python-pylibmc or python-memcache
+python-pylibmc or python-memcached
 
 In case you want to use fcgi:
 python-flup

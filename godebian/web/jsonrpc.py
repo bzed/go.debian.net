@@ -67,6 +67,9 @@ def jsondispatch(data):
         retDict['error'] = 'unknown method'
         return json.dumps(retDict)
 
+#todo:
+#fix calling function explicitly.
+
     try:
         retDict['result'] = handler(*params)
     except:
