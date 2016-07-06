@@ -1,3 +1,4 @@
 sqlalchemy
 python-memcached
 flask
+ipy
