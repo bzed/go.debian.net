@@ -17,8 +17,9 @@ apt-get install python3-application -y
 pip3 install python-memcached
 }
 
-function python2{
+function python2 {
 # Preparing pip
+
 apt-get install python-pip -y
 
 apt-get install python-requests -y
@@ -31,7 +32,7 @@ apt-get install python-application -y
 apt-get install python-memcache -y
 }
 
-function common{
+function common {
 echo "updating apt-get"
 apt-get update
 
@@ -51,7 +52,7 @@ cd go.debian.net/godebian
 #pip install -r requirements.txt
 }
 
-function main{
+function main {
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
    echo "This script must be run as root" 1>&2
