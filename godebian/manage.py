@@ -56,10 +56,16 @@ def _url_valid(url):
 
 
 class ManagementException(Exception):
+    """
+    Base class for Exception Management
+    """
     pass
 
 
 class AddStaticUrlException(ManagementException):
+    """
+    Handling exceptions in AddStaticUrl method
+    """
     def __init__(self, alternate_key):
         self.alternate_key = alternate_key
 
@@ -76,11 +82,17 @@ class AddStaticUrlException(ManagementException):
 
 
 class UpdateStaticUrlException(ManagementException):
+    """
+    Handling exceptions in UpdateStaticUrl method
+    """
     def __str__(self):
         return "The custom alias you've chosen does not exist or the update failed for other reasons.\n"
 
 
 class InvalidUrlException(ManagementException):
+    """
+    Handling exception if URL provided is not a Valid URL in add, add_static and update_static methods
+    """
     def __init__(self, url):
         self.url = url
 

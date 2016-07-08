@@ -83,6 +83,9 @@ _session = sessionmaker(bind=_engine)
 
 
 class DbException(Exception):
+    """
+    Base class for DB exception handling
+    """
     def __init__(self, id, url):
         self.id = id
         self.url = url

@@ -30,18 +30,24 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
 import re
-
 import IPy
 
 from application.configuration import ConfigSection, ConfigSetting
 from application.process import process
 
-#swap config directories, makes more sense in our case.
+# swap config directories, makes more sense in our case.
 process.local_config_directory = process.system_config_directory
 process.system_config_directory = os.path.realpath(os.path.dirname(__file__))
 
 
 class IPyNetworkRangeList(list):
+    """
+    The IP class allows a comfortable parsing and handling for most
+    notations in use for IPv4 and IPv6 addresses and networks. It was
+    greatly inspired by RIPE's Perl module NET::IP's interface but
+    doesn't share the implementation. It doesn't share non-CIDR netmasks,
+    so funky stuff like a netmask of 0xffffff0f can't be done here.
+    """
     def __new__(cls, value):
         if isinstance(value, (tuple, list)):
             return [IPy.IP(x) for x in value]
@@ -52,23 +58,57 @@ class IPyNetworkRangeList(list):
         else:
             raise TypeError("value must be a string, list or tuple")
 
+
 class UrlencoderConfig(ConfigSection):
+    """
+    Convert a mapping object or a sequence of two-element tuples to a “percent-encoded” string,
+    suitable to pass to urlopen() above as the optional data argument.
+    alphabet : URL encoder default alphabets used for regex compiling in urlencoder.py
+    blocksize: length of block allowed
+    """
     alphabet = '1qw2ert3yuio4pQWER5TYUIOP6asdfghj7klASDFG8HJKLzxcv9bnmZXCVBN0M'
     blocksize = 22
+
+
 UrlencoderConfig.read('godebian.conf', 'urlencoder')
 
+
 class DatabaseConfig(ConfigSection):
+    """
+    SQLalchemy database configurations
+    debug : True initiates SQLalchemy in verbose debug mode
+    connection : <sqlengine>://<db_name>
+    """
     connection = 'postgresql:///godebian'
     debug = False
+
+
 DatabaseConfig.read('godebian.conf', 'database')
 
+
 class MemcachedConfig(ConfigSection):
+    """
+    Configurations for Memcache daemon
+    server : <ip>:<port>
+    timeout : request timeout period
+    Memcache prefix : key prefixes
+    """
     servers = '127.0.0.1:11211'
     timeout = 600
     prefix = 'godebian'
+
+
 MemcachedConfig.read('godebian.conf', 'memcached')
 
+
 class FlaskConfig(ConfigSection):
+    """
+    Flask config context
+    debug : True sets verbose mode
+    static_dir : location of directory containing static files like css,js,images etc
+    template_dir : location of jinja2 templates folder
+    allowed_rpc_ips : Allowed IP address for rpc_json api
+    """
     debug = False
     template_dir = os.path.realpath(os.path.join(os.path.dirname(__file__), 'web', 'views'))
     static_dir = os.path.realpath(os.path.join(os.path.dirname(__file__), 'web', 'static'))
@@ -76,4 +116,6 @@ class FlaskConfig(ConfigSection):
     domain = 'deb.li'
     google_site_verification = ''
     max_content_length = 4 * 1024
+
+
 FlaskConfig.read('godebian.conf', 'flask')
