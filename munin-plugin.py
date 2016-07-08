@@ -51,9 +51,9 @@ def stats():
             %(str(count(is_static=False)), str(count(is_static=True)))
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        if sys.argv[1] == 'config':
-            config()
+    if len(sys.argv) > 1 and sys.argv[1] == "config":
+        #if sys.argv[1] == 'config':
+        config()
     else:
         stats()
 
