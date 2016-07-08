@@ -52,7 +52,6 @@ class IPyNetworkRangeList(list):
         else:
             raise TypeError("value must be a string, list or tuple")
 
-
 class UrlencoderConfig(ConfigSection):
     alphabet = '1qw2ert3yuio4pQWER5TYUIOP6asdfghj7klASDFG8HJKLzxcv9bnmZXCVBN0M'
     blocksize = 22

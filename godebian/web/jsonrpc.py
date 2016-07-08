@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 __author__ = "Bernd Zeimetz"
 __contact__ = "bzed@debian.org"
 __license__ = """
@@ -50,10 +51,10 @@ def jsondispatch(data):
     try:
         rawdata = json.loads(data)
     except SyntaxError:
-        print "SyntaxError in data: %s" % (data,)
+        print("SyntaxError in data: %s" % (data,))
         return None
     except ValueError:
-        print "ValueError in data: %s" % (data,)
+        print("ValueError in data: %s" % (data,))
         return None
     id = rawdata.get('id', 0)
     ret_dict = {'id': id, 'error': None}
