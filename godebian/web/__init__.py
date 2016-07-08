@@ -169,7 +169,8 @@ def rpc_json():
         return flask.abort(401)
     flask.request.use_raw_stream = True
     result = jsondispatch(flask.request.data)
-    if result == None:
+    #if result == None:
+    if result:
         return flask.abort(400)
     return flask.jsonify(**result)
 

@@ -55,14 +55,16 @@ def jsondispatch(data):
     id = rawdata.get('id', 0)
     retDict = { 'id' : id , 'error' : None }
 
-    method = rawdata.get('method', None)
+    #method = rawdata.get('method', None)
+    method = rawdata.get('method')
     if not method:
         retDict['error'] = 'method missing in request'
         return json.dumps(retDict)
 
     params = rawdata.get('params', [])
 
-    handler = _JSONMETHODS.get(method, None)
+    #handler = _JSONMETHODS.get(method, None)
+    handler = _JSONMETHODS.get(method)
     if not handler:
         retDict['error'] = 'unknown method'
         return json.dumps(retDict)
