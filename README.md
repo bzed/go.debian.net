@@ -1,4 +1,4 @@
-[![Code Issues](https://www.quantifiedcode.com/api/v1/project/52a171589b6943d0ae00c53cabc773ba/badge.svg)](https://www.quantifiedcode.com/app/project/52a171589b6943d0ae00c53cabc773ba)
+[![Code Issues](https://www.quantifiedcode.com/api/v1/project/93a458066fab4194bcb717a0e0ce4ceb/badge.svg)](https://www.quantifiedcode.com/app/project/93a458066fab4194bcb717a0e0ce4ceb)
 
 Dependencies:
 -------------
