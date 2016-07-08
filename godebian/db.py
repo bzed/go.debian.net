@@ -68,6 +68,9 @@ _metadata.create_all(_engine)
 
 
 class Url(object):
+    """
+    URL class is used to map against urltable in SQL
+    """
     def __init__(self, url, id, is_static=False, log=None):
         self.url = urllib.unquote(url)
         self.id = id
@@ -86,16 +89,27 @@ class DbException(Exception):
 
 
 class DbIdExistsException(DbException):
+    """
+    This exception will be raised if supplied ID already exists in DB
+    """
     def __str__(self):
         return "Id %s exists in Database" % (str(self.id),)
 
 
 class DbIdOutOfRangeException(DbException):
+    """
+    Raised when supplied ID is too large
+    """
     def __str__(self):
         return "Id %s is too large to be inserted into the database" % (str(self.id),)
 
 
 def get_url(id):
+    """
+
+    :param id: id of shortened URL
+    :return: None or URL
+    """
     session = _session()
     url = session.query(Url.url).filter(Url.id == id)[:1]
     session.close()
