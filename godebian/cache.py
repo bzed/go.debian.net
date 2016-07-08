@@ -41,15 +41,15 @@ _timeout = MemcachedConfig.timeout
 _prefix = MemcachedConfig.prefix
 
 if _servers[0].lower() != 'nullcache':
-    from  werkzeug.contrib.cache import MemcachedCache
+    from werkzeug.contrib.cache import MemcachedCache
 
     _client = memcache.Client(_servers)
-    MemCache = MemcachedCache(_client,
-                              default_timeout=_timeout,
-                              key_prefix=_prefix)
+    mem_cache = MemcachedCache(_client,
+                               default_timeout=_timeout,
+                               key_prefix=_prefix)
 else:
-    from  werkzeug.contrib.cache import NullCache
+    from werkzeug.contrib.cache import NullCache
 
-    MemCache = NullCache()
+    mem_cache = NullCache()
 
-__all__ = ["MemCache"]
+__all__ = ["mem_cache"]

@@ -76,7 +76,7 @@ class Url(object):
 
 
 mapper(Url, _urltable)
-_Session = sessionmaker(bind=_engine)
+_session = sessionmaker(bind=_engine)
 
 
 class DbException(Exception):
@@ -96,7 +96,7 @@ class DbIdOutOfRangeException(DbException):
 
 
 def get_url(id):
-    session = _Session()
+    session = _session()
     url = session.query(Url.url).filter(Url.id == id)[:1]
     session.close()
     if url:
@@ -129,7 +129,7 @@ def add_url(url, static_id=None, log=None):
         session.rollback()
         session.close()
 
-    session = _Session()
+    session = _session()
     if not static_id:
         """ Check if the requested URL is in the database already,
             if so return the id of the existing entry. If not,
@@ -189,7 +189,7 @@ def update_url(url, static_id, log=None):
         session.rollback()
         session.close()
 
-    session = _Session()
+    session = _session()
     try:
         _update_url_in_session(session, url, static_id, log)
     except IntegrityError:
@@ -210,7 +210,7 @@ def count(is_static=False):
     :param is_static:
     :return: count
     """
-    session = _Session()
+    session = _session()
     # could be replaced by session.query(sqlalchemy.func.count(Url).scalar()
     count = session.query(Url).filter(Url.is_static == is_static).count()
     session.close()

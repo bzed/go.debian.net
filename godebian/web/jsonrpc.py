@@ -38,46 +38,48 @@ import traceback
 
 _JSONMETHODS = {}
 
+
 def jsonmethod(methodname):
     def wrapper(handler):
         _JSONMETHODS[methodname] = handler
+
     return wrapper
+
 
 def jsondispatch(data):
     try:
         rawdata = json.loads(data)
     except SyntaxError:
-        print "SyntaxError in data: %s" %(data, )
+        print "SyntaxError in data: %s" % (data,)
         return None
     except ValueError:
-        print "ValueError in data: %s" %(data, )
+        print "ValueError in data: %s" % (data,)
         return None
     id = rawdata.get('id', 0)
-    retDict = { 'id' : id , 'error' : None }
+    ret_dict = {'id': id, 'error': None}
 
-    #method = rawdata.get('method', None)
+    # method = rawdata.get('method', None)
     method = rawdata.get('method')
     if not method:
-        retDict['error'] = 'method missing in request'
-        return json.dumps(retDict)
+        ret_dict['error'] = 'method missing in request'
+        return json.dumps(ret_dict)
 
     params = rawdata.get('params', [])
 
-    #handler = _JSONMETHODS.get(method, None)
+    # handler = _JSONMETHODS.get(method, None)
     handler = _JSONMETHODS.get(method)
     if not handler:
-        retDict['error'] = 'unknown method'
-        return json.dumps(retDict)
+        ret_dict['error'] = 'unknown method'
+        return json.dumps(ret_dict)
 
-#todo:
-#fix calling function explicitly.
+    # todo:
+    # fix calling function explicitly.
 
     try:
-        retDict['result'] = handler(*params)
+        ret_dict['result'] = handler(*params)
     except:
         traceback.print_exc(file=sys.stdout)
-        retDict['result'] = None
-        retDict['error'] = "%s:%s" % (sys.exc_type, sys.exc_value)
+        ret_dict['result'] = None
+        ret_dict['error'] = "%s:%s" % (sys.exc_type, sys.exc_value)
     finally:
-        return retDict
-
+        return ret_dict
