@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+
 __author__ = "Bernd Zeimetz"
 __contact__ = "bzed@debian.org"
 __license__ = """
@@ -27,18 +29,97 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
-
 import os
 import re
 import IPy
+from types import ClassType, TypeType
+import json
 
-from application.configuration import ConfigSection, ConfigSetting
-from application.process import process
+#from application.configuration import ConfigSection
+#from application.configuration import ConfigSetting
+#from application.process import process
+
+config_files = dict(production="/etc/godebian_config.json",
+                    development="godebian_config.json")
+
+#production_mode = False for development mode
+production_mode = False
+
+
+class FileNotFound(Exception):
+    """
+    Raised when specified config file path does not exist
+    """
+    def __init__(self,fname):
+        self.fname = fname
+
+    def __str__(self):
+        return "File not found at location {0}".format(self.fname)
+
+
+def get_config_dict():
+    """
+    config data priority:
+    config attributes mentioned in class declaration can be overriden by data in json files
+    Selection of JSON file is done by checking production_mode flag
+    :return: data : configuration data loaded from json file in dict format
+    """
+    if production_mode:
+        fname = config_files['production']
+    else:
+        fname = config_files['development']
+
+    if not os.path.exists(fname):
+        raise FileNotFound(fname=fname)
+
+    with open(fname) as data_file:
+        data = json.load(data_file)
+
+    return data
+
+
+class ConfigSection(object):
+
+    @classmethod
+    def __read__(cls, section):
+        """
+        :param section: section can be database,urlencoder,memcached,flask
+        :return:
+        """
+        data = get_config_dict()
+        if data:
+            if data.get(section,False):
+                for key,value in data.get(section).items():
+                    try:
+                        setattr(cls,key,value)
+                    except Exception as e:
+                        msg = "ignoring invalid config value: %s.%s=%s (%s)." % (section, key, value, e)
+                        print(msg)
+            else:
+                raise ValueError("A config file and section are required for reading settings")
+
+    #monkey patch
+    read = __read__
+
+
+class ConfigSetting(object):
+    def __init__(self, type, value=None):
+        self.type = type
+        self.value = value
+        self.type_is_class = isinstance(type, (ClassType, TypeType))
+
+    def __get__(self, obj, objtype):
+        return self.value
+
+    def __set__(self, obj, value, convert=True):
+        if convert and value is not None and not (self.type_is_class and isinstance(value, self.type)):
+            value = self.type(value)
+        self.value = value
+
 
 # swap config directories, makes more sense in our case.
-process.local_config_directory = process.system_config_directory
-process.system_config_directory = os.path.realpath(os.path.dirname(__file__))
-
+# process.local_config_directory = process.system_config_directory
+# process.system_config_directory = os.path.realpath(os.path.dirname(__file__))
 
 class IPyNetworkRangeList(list):
     """
@@ -69,8 +150,7 @@ class UrlencoderConfig(ConfigSection):
     alphabet = '1qw2ert3yuio4pQWER5TYUIOP6asdfghj7klASDFG8HJKLzxcv9bnmZXCVBN0M'
     blocksize = 22
 
-
-UrlencoderConfig.read('godebian.conf', 'urlencoder')
+UrlencoderConfig.read(section='urlencoder')
 
 
 class DatabaseConfig(ConfigSection):
@@ -83,7 +163,7 @@ class DatabaseConfig(ConfigSection):
     debug = False
 
 
-DatabaseConfig.read('godebian.conf', 'database')
+DatabaseConfig.read(section='database')
 
 
 class MemcachedConfig(ConfigSection):
@@ -98,7 +178,7 @@ class MemcachedConfig(ConfigSection):
     prefix = 'godebian'
 
 
-MemcachedConfig.read('godebian.conf', 'memcached')
+MemcachedConfig.read(section='memcached')
 
 
 class FlaskConfig(ConfigSection):
@@ -118,4 +198,8 @@ class FlaskConfig(ConfigSection):
     max_content_length = 4 * 1024
 
 
-FlaskConfig.read('godebian.conf', 'flask')
+FlaskConfig.read(section='flask')
+
+print(FlaskConfig.debug)
+print(UrlencoderConfig.alphabet)
+print(FlaskConfig.domain)
