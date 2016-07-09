@@ -87,6 +87,10 @@ class RawRequest(flask.Request):
     by linking app.request class context to RawRequest class
     """
     def _load_form_data(self):
+        """
+        Load form data from raw_request
+        :return: None
+        """
         if not self.use_raw_stream:
             return werkzeug.Request._load_form_data()
 
