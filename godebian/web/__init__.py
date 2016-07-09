@@ -81,6 +81,11 @@ app.url_map.converters['shorturl'] = ShortUrlConverter
 
 
 class RawRequest(flask.Request):
+    """
+    Inherited from flask.Request class
+    Low level request handeling performed here
+    by linking app.request class context to RawRequest class
+    """
     def _load_form_data(self):
         if not self.use_raw_stream:
             return werkzeug.Request._load_form_data()
@@ -109,6 +114,11 @@ app.request_class = RawRequest
 
 
 def _check_access(ip):
+    """
+    Verifies if request IP is allowed to access JSON-RPC API
+    :param ip: ip_address of requesting system
+    :return: True or False based on boolean logic
+    """
     for allowed_ip in FlaskConfig.allowed_rpc_ips:
         if ip in allowed_ip:
             return True
@@ -186,13 +196,17 @@ def __remote_address__():
 
 @app.route('/rpc/json', methods=['POST'])
 def rpc_json():
+    """
+    JSON-RPC handler URL
+    :return: json in HTTP response
+    """
     remote_address = __remote_address__()
     if not _check_access(remote_address):
         return flask.abort(401)
     flask.request.use_raw_stream = True
     result = jsondispatch(flask.request.data)
     # if result == None:
-    if result:
+    if not result:
         return flask.abort(400)
     return flask.jsonify(**result)
 

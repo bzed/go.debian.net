@@ -79,6 +79,13 @@ def get_config_dict():
 
 
 class ConfigSection(object):
+    """
+    Defines a section in the configuration file
+
+    Settings defined in superclasses are not inherited, but cloned as if
+    defined in the subclass using ConfigSetting. All other attributes
+    are inherited as normal.
+    """
 
     @classmethod
     def __read__(cls, section):
@@ -103,6 +110,11 @@ class ConfigSection(object):
 
 
 class ConfigSetting(object):
+    """
+    Code belongs to python-application package in application/configuration/__init__.py
+    Hacky way to keep things from breaking
+    Used here so as no much code updating is required while porting this code
+    """
     def __init__(self, type, value=None):
         self.type = type
         self.value = value
@@ -123,6 +135,9 @@ class ConfigSetting(object):
 
 class IPyNetworkRangeList(list):
     """
+    Todo:
+    replace IP based verification to token based
+
     The IP class allows a comfortable parsing and handling for most
     notations in use for IPv4 and IPv6 addresses and networks. It was
     greatly inspired by RIPE's Perl module NET::IP's interface but
@@ -149,7 +164,6 @@ class UrlencoderConfig(ConfigSection):
     """
     alphabet = '1qw2ert3yuio4pQWER5TYUIOP6asdfghj7klASDFG8HJKLzxcv9bnmZXCVBN0M'
     blocksize = 22
-
 UrlencoderConfig.read(section='urlencoder')
 
 
@@ -161,8 +175,6 @@ class DatabaseConfig(ConfigSection):
     """
     connection = 'postgresql:///godebian'
     debug = False
-
-
 DatabaseConfig.read(section='database')
 
 
@@ -176,8 +188,6 @@ class MemcachedConfig(ConfigSection):
     servers = '127.0.0.1:11211'
     timeout = 600
     prefix = 'godebian'
-
-
 MemcachedConfig.read(section='memcached')
 
 
@@ -196,10 +206,4 @@ class FlaskConfig(ConfigSection):
     domain = 'deb.li'
     google_site_verification = ''
     max_content_length = 4 * 1024
-
-
 FlaskConfig.read(section='flask')
-
-print(FlaskConfig.debug)
-print(UrlencoderConfig.alphabet)
-print(FlaskConfig.domain)

@@ -48,6 +48,14 @@ def jsonmethod(methodname):
 
 
 def jsondispatch(data):
+    """
+    Dispatch JSON-RPC mapped function based on method name provided in request body
+    parse method and parameters to that method
+    :param data: dict
+    Todo:
+    Error handling done for parsing request data
+    :return: response for flask request life cycle
+    """
     try:
         rawdata = json.loads(data)
     except SyntaxError:

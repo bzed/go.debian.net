@@ -86,6 +86,11 @@ class UrlEncoder(object):
         return self.enbase(x / n) + self.alphabet[x % n]
 
     def debase(self, x):
+        """
+         Performs dbase operation
+         contents of  x should be reversed before enumerating
+        :return: result
+        """
         n = len(self.alphabet)
         result = 0
         for i, c in enumerate(reversed(x)):
