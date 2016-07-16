@@ -12,8 +12,6 @@ apt-get install python3-psycopg2 -y
 apt-get install python3-flask -y
 apt-get install python3-ipy -y
 apt-get install python3-sqlalchemy -y
-apt-get install python3-application -y
-
 pip3 install python-memcached
 }
 
@@ -27,8 +25,6 @@ apt-get install python-psycopg2 -y
 apt-get install python-flask -y
 apt-get install python-ipy -y
 apt-get install python-sqlalchemy -y
-apt-get install python-application -y
-
 apt-get install python-memcache -y
 }
 

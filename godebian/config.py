@@ -35,10 +35,6 @@ import IPy
 from types import ClassType, TypeType
 import json
 
-#from application.configuration import ConfigSection
-#from application.configuration import ConfigSetting
-#from application.process import process
-
 config_files = dict(production="/etc/godebian_config.json",
                     development="godebian_config.json")
 
