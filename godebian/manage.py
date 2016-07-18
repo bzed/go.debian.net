@@ -32,9 +32,13 @@ from .urlencoder import encode_url, decode_url
 from .cache import memcache
 from .config import UrlencoderConfig
 from . import db
-
+import sys
 import re
-import urlparse
+
+if (sys.version_info > (3, 0)):
+    import urllib.parse as urlparse
+else:
+    import urlparse
 
 # regex to validate key string
 _key_validator_re = re.compile(r'^([' + UrlencoderConfig.alphabet + ']+)$')
