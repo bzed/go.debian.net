@@ -29,6 +29,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 """
 
 from .config import UrlencoderConfig
+import sys
 
 DEFAULT_ALPHABET = UrlencoderConfig.alphabet
 DEFAULT_BLOCK_SIZE = UrlencoderConfig.blocksize
@@ -45,7 +46,13 @@ class UrlEncoder(object):
         self.alphabet = alphabet
         self.block_size = block_size
         self.mask = (1 << block_size) - 1
-        self.mapping = range(block_size)
+
+        if (sys.version_info > (3, 0)):
+            # Python 3 code in this block
+            self.mapping = list(range(block_size))
+        else:
+            # Python 2 code in this block
+            self.mapping = range(block_size)
         self.mapping.reverse()
 
     def encode_url(self, n, min_length=0):
