@@ -1,17 +1,17 @@
 {
     "database" : {
         "debug": true,
-        "connection": "postgres:///godebian1"
+        "connection": "postgres:///godebian"
     },
 
     "urlencoder" : {
-        "blocksize": 251,
+        "blocksize": 25,
         "alphabet": "1qw2ert3yuio4pQWER5TYUIOP6asdfghj7klASDFG8HJKLzxcv9bnmZXCVBN0M"
     },
 
     "memcached" :{
         "prefix": "godebian",
-        "timeout": 1600,
+        "timeout": 600,
         "servers": "1127.0.0.1:11211"
     },
 
