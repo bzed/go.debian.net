@@ -43,7 +43,7 @@ TypeType = type
 
 
 config_files = dict(production="/etc/godebian_config.json",
-                    development="godebian_config.json")
+                    development="godebian/godebian_config.json")
 
 #production_mode = False for development mode
 production_mode = False
