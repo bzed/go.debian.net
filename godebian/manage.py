@@ -29,7 +29,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 from .urlencoder import encode_url, decode_url
-from .cache import MemCache
+from .cache import memcache
 from .config import UrlencoderConfig
 from . import db
 
