@@ -32,8 +32,15 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
 import re
 import IPy
-from types import ClassType, TypeType
 import json
+
+
+# python3 TYPE fix
+class _C:
+    def _m(self): pass
+ClassType = type(_C)
+TypeType = type
+
 
 config_files = dict(production="/etc/godebian_config.json",
                     development="godebian_config.json")
