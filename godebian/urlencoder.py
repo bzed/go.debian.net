@@ -47,7 +47,7 @@ class UrlEncoder(object):
         self.block_size = block_size
         self.mask = (1 << block_size) - 1
 
-        if (sys.version_info > (3, 0)):
+        if sys.version_info > (3, 0):
             # Python 3 code in this block
             self.mapping = list(range(block_size))
         else:

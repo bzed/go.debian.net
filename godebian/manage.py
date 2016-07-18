@@ -35,7 +35,7 @@ from . import db
 import sys
 import re
 
-if (sys.version_info > (3, 0)):
+if sys.version_info > (3, 0):
     import urllib.parse as urlparse
 else:
     import urlparse
