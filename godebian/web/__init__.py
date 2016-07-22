@@ -83,7 +83,7 @@ app.url_map.converters['shorturl'] = ShortUrlConverter
 class RawRequest(flask.Request):
     """
     Inherited from flask.Request class
-    Low level request handeling performed here
+    Low level request handling performed here
     by linking app.request class context to RawRequest class
     """
     def _load_form_data(self):

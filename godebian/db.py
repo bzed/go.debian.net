@@ -148,9 +148,10 @@ def add_url(url, static_id=None, log=None):
 
     session = _session()
     if not static_id:
-        """ Check if the requested URL is in the database already,
-            if so return the id of the existing entry. If not,
-            find the next unused id.
+        """
+        Check if the requested URL is in the database already,
+        if so return the id of the existing entry. If not,
+        find the next unused id.
         """
         id_query = session.query(Url.id).filter(and_(Url.url == urllib.unquote(url),
                                                      Url.is_static == False))[:1]
@@ -166,8 +167,10 @@ def add_url(url, static_id=None, log=None):
         _add_url_to_session(session, url, id, False, log)
 
     else:
-        """ A static id was requested. In case the id is used already, an
-            DbIdExistsException is raised. """
+        """
+        A static id was requested. In case the id is used already, an
+        DbIdExistsException is raised.
+        """
         id = static_id
         try:
             _add_url_to_session(session, url, id, True, log)

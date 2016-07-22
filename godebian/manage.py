@@ -29,7 +29,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 from .urlencoder import encode_url, decode_url
-from .cache import memcache
+from .cache import mem_cache as MemCache
 from .config import UrlencoderConfig
 from . import db
 import sys
@@ -70,12 +70,13 @@ class AddStaticUrlException(ManagementException):
     """
     Handling exceptions in AddStaticUrl method
     """
+
     def __init__(self, alternate_key):
         self.alternate_key = alternate_key
 
     def __str__(self):
         return "The custom alias you've chosen is not available or too long. We've created a random one for you instead, but you can try  to assign a different custom alias again.\n\n%s" % (
-        self.alternate_key,)
+            self.alternate_key,)
 
     def get_alternate_key(self):
         """
@@ -89,6 +90,7 @@ class UpdateStaticUrlException(ManagementException):
     """
     Handling exceptions in UpdateStaticUrl method
     """
+
     def __str__(self):
         return "The custom alias you've chosen does not exist or the update failed for other reasons.\n"
 
@@ -97,6 +99,7 @@ class InvalidUrlException(ManagementException):
     """
     Handling exception if URL provided is not a Valid URL in add, add_static and update_static methods
     """
+
     def __init__(self, url):
         self.url = url
 
@@ -145,6 +148,10 @@ def add_static_url(url, key, log=None):
 def update_static_url(url, key, log=None):
     """
     Update key for existing static url
+    :param url:
+    :param key:
+    :param log:
+    :return: key
     """
     if not _url_valid(url):
         raise InvalidUrlException(url)

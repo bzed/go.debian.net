@@ -41,11 +41,10 @@ class _C:
 ClassType = type(_C)
 TypeType = type
 
-
 config_files = dict(production="/etc/godebian_config.json",
                     development="godebian/godebian_config.json")
 
-#production_mode = False for development mode
+# production_mode = False for development mode
 production_mode = False
 
 
@@ -98,17 +97,17 @@ class ConfigSection(object):
         """
         data = get_config_dict()
         if data:
-            if data.get(section,False):
-                for key,value in data.get(section).items():
+            if data.get(section, False):
+                for key, value in data.get(section).items():
                     try:
-                        setattr(cls,key,value)
+                        setattr(cls, key, value)
                     except Exception as e:
                         msg = "ignoring invalid config value: %s.%s=%s (%s)." % (section, key, value, e)
                         print(msg)
             else:
                 raise ValueError("A config file and section are required for reading settings")
 
-    #monkey patch
+    # monkey patch
     read = __read__
 
 
@@ -118,11 +117,13 @@ class ConfigSetting(object):
     Hacky way to keep things from breaking
     Used here so as no much code updating is required while porting this code
     """
+
     def __init__(self, type, value=None):
         self.type = type
         self.value = value
         self.type_is_class = isinstance(type, (ClassType, TypeType))
 
+    # todo: remove obj and objtype arguments as they are not used
     def __get__(self, obj, objtype):
         return self.value
 
@@ -147,6 +148,7 @@ class IPyNetworkRangeList(list):
     doesn't share the implementation. It doesn't share non-CIDR netmasks,
     so funky stuff like a netmask of 0xffffff0f can't be done here.
     """
+
     def __new__(cls, value):
         if isinstance(value, (tuple, list)):
             return [IPy.IP(x) for x in value]
@@ -167,6 +169,8 @@ class UrlencoderConfig(ConfigSection):
     """
     alphabet = '1qw2ert3yuio4pQWER5TYUIOP6asdfghj7klASDFG8HJKLzxcv9bnmZXCVBN0M'
     blocksize = 22
+
+
 UrlencoderConfig.read(section='urlencoder')
 
 
@@ -178,6 +182,8 @@ class DatabaseConfig(ConfigSection):
     """
     connection = 'postgresql:///godebian'
     debug = False
+
+
 DatabaseConfig.read(section='database')
 
 
@@ -191,6 +197,8 @@ class MemcachedConfig(ConfigSection):
     servers = '127.0.0.1:11211'
     timeout = 600
     prefix = 'godebian'
+
+
 MemcachedConfig.read(section='memcached')
 
 
@@ -209,4 +217,6 @@ class FlaskConfig(ConfigSection):
     domain = 'deb.li'
     google_site_verification = ''
     max_content_length = 4 * 1024
+
+
 FlaskConfig.read(section='flask')
