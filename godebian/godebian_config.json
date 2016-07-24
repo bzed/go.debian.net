@@ -1,7 +1,7 @@
 {
     "database" : {
         "debug": true,
-        "connection": "postgres:///godebian"
+        "connection": "sqlite:///godebian"
     },
 
     "urlencoder" : {
