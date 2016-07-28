@@ -1,7 +1,7 @@
+from __future__ import print_function
 __author__ = 'Harsh Daftary'
 
 try:
-    from __future__ import print_function
     import requests
     import json
     import inspect
@@ -27,7 +27,7 @@ class GoDebianApi(object):
 
         :return None
         """
-        self.api_url = "http://127.0.0.1:5000/rpc/json"
+        self.api_url = "http://deb.li/rpc/json"
         self.host = host
         self.preview = host + "p/%s"
         self.headers = {'Content-type': 'application/json'}
@@ -100,16 +100,26 @@ class GoDebianApi(object):
         :return:
         """
 
-urls = []
-resps = {}
+urls = ["www.debian.net","www.gmail.com","www.facebook.com"]
+static_urls = [dict(url="http://www.debian.org",id="debian23")]
 
 
 class BaseTest(object):
-    pass
+    api = GoDebianApi()
 
+    def test_non_static_urls(self):
+        for i in urls:
+            key = self.api.add_url(url=i)
+            url = self.api.get_url(key=key)
+            assert url == i, "Error"
 
+    def test_static_urls(self):
+        for i in static_urls:
+            self.api.add_static_url(url=i["url"],keyword=i["id"])
+            url = self.api.get_url(key=i["id"])
+            assert url == i["url"], "Error"
 
 if __name__ == '__main__':
-    a = GoDebianApi()
-    a.add_static_url("http://www.debian.org","debian23")
-
+    test = BaseTest()
+    test.test_static_urls()
+    test.test_non_static_urls()

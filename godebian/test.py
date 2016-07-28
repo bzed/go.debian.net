@@ -38,6 +38,6 @@ _metadata.create_all()
 
 seq = Sequence(_URL_ID_SEQ)
 id = engine.execute(seq)
-print(id)
-
+print(engine.execute(seq.next_value()))
+seq.next_value()
 
