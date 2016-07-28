@@ -1,7 +1,7 @@
 {
     "database" : {
         "debug": true,
-        "connection": "sqlite:///godebian"
+        "connection": "sqlite:///godebian.db"
     },
 
     "urlencoder" : {
@@ -16,7 +16,7 @@
     },
 
     "flask" : {
-        "debug": true,
+        "debug": false,
         "allowed_rpc_ips": [
                 "127.0.0.1",
                 "::1",

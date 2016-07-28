@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+
 __author__ = "Bernd Zeimetz"
 __contact__ = "bzed@debian.org"
 __license__ = """
@@ -34,6 +36,7 @@ from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, 
     Sequence, Boolean, and_, func, DateTime, Text
 from sqlalchemy.orm import mapper, sessionmaker
 from sqlalchemy.exc import IntegrityError, DataError
+from special_filter import pre_filter,post_filter
 
 from .config import DatabaseConfig
 
@@ -122,6 +125,7 @@ def get_url(id):
 
 
 def add_url(url, static_id=None, log=None):
+    print(static_id)
     """
 
     :param url: url to be shortened
@@ -147,12 +151,18 @@ def add_url(url, static_id=None, log=None):
         session.close()
 
     session = _session()
+    print("-------------------")
+    print(static_id)
     if not static_id:
         """
         Check if the requested URL is in the database already,
         if so return the id of the existing entry. If not,
         find the next unused id.
         """
+        #todo : check if it really works
+        url = pre_filter(url=url)
+        print(url)
+
         id_query = session.query(Url.id).filter(and_(Url.url == urllib.unquote(url),
                                                      Url.is_static == False))[:1]
         if id_query:

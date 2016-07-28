@@ -55,6 +55,9 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
+main
+
+echo "Preparing installation"
 common
 
 # Parse sys argument to get python version
@@ -67,4 +70,3 @@ python2
 fi
 }
 
-main

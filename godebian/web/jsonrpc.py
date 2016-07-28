@@ -69,6 +69,7 @@ def jsondispatch(data):
 
     # method = rawdata.get('method', None)
     method = rawdata.get('method')
+    print(rawdata)
     if not method:
         ret_dict['error'] = 'method missing in request'
         return json.dumps(ret_dict)

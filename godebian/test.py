@@ -19,6 +19,7 @@ _urltable = Table(_URL_TABLE, _metadata,
                   Column('log', Text, nullable=True),
                   )
 
+
 class Url(object):
     """
     URL class is used to map against urltable in SQL
@@ -31,8 +32,12 @@ class Url(object):
 
 mapper(Url, _urltable)
 
-_metadata.create_all(engine)
+_metadata.bind = engine
+_metadata.create_all()
 
-_urltable.__table__.create()
+
+seq = Sequence(_URL_ID_SEQ)
+id = engine.execute(seq)
+print(id)
 
 
