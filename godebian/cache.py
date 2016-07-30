@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import memcache
+from .config import MemcachedConfig
+
 __author__ = "Bernd Zeimetz"
 __contact__ = "bzed@debian.org"
 __license__ = """
@@ -27,9 +30,6 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
-
-import memcache
-from .config import MemcachedConfig
 
 # pylibmc seems to be buggy, for whatever reason - since libmemcached5
 # try:

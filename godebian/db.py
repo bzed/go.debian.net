@@ -31,12 +31,11 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import urllib
-
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, \
     Sequence, Boolean, and_, func, DateTime, Text
 from sqlalchemy.orm import mapper, sessionmaker
 from sqlalchemy.exc import IntegrityError, DataError
-from special_filter import pre_filter,post_filter
+from special_filter import pre_filter
 
 from .config import DatabaseConfig
 
@@ -67,6 +66,7 @@ _urltable = Table(_URL_TABLE, _metadata,
                   Column('create_date', DateTime, default=func.now()),
                   Column('log', Text, nullable=True),
                   )
+
 _metadata.create_all(_engine)
 
 
@@ -74,6 +74,7 @@ class Url(object):
     """
     URL class is used to map against urltable in SQL
     """
+
     def __init__(self, url, id, is_static=False, log=None):
         self.url = urllib.unquote(url)
         self.id = id
@@ -89,6 +90,7 @@ class DbException(Exception):
     """
     Base class for DB exception handling
     """
+
     def __init__(self, id, url):
         self.id = id
         self.url = url
@@ -98,6 +100,7 @@ class DbIdExistsException(DbException):
     """
     This exception will be raised if supplied ID already exists in DB
     """
+
     def __str__(self):
         return "Id %s exists in Database" % (str(self.id),)
 
@@ -106,6 +109,7 @@ class DbIdOutOfRangeException(DbException):
     """
     Raised when supplied ID is too large
     """
+
     def __str__(self):
         return "Id %s is too large to be inserted into the database" % (str(self.id),)
 
@@ -151,15 +155,13 @@ def add_url(url, static_id=None, log=None):
         session.close()
 
     session = _session()
-    print("-------------------")
-    print(static_id)
     if not static_id:
         """
         Check if the requested URL is in the database already,
         if so return the id of the existing entry. If not,
         find the next unused id.
         """
-        #todo : check if it really works
+        # todo : check if it really works
         url = pre_filter(url=url)
         print(url)
 
@@ -169,12 +171,13 @@ def add_url(url, static_id=None, log=None):
             _abort_session(session)
             return id_query[0][0]
 
-        id = int(session.query(_urltable.pk).count()) + 1
-        #id = session.execute("""select nextval('%s');""" % (_URL_ID_SEQ,)).fetchone()[0]
+        id = int(session.query(Url.pk).count()) + 1
+        # id = session.execute("""select nextval('%s');""" % (_URL_ID_SEQ,)).fetchone()[0]
         # Perform Shared/Read LOCK on Table
-        session.execute("""LOCK TABLE %s in SHARE MODE""" % (_URL_TABLE,))
+
+        # session.execute("""LOCK TABLE %s in SHARE MODE""" % (_URL_TABLE,))
         while session.query(Url.id).filter(Url.id == id)[:1]:
-            id = int(session.query(_urltable.pk).count()) + 1
+            id = int(session.query(Url.pk).count()) + 1
         _add_url_to_session(session, url, id, False, log)
 
     else:
@@ -242,7 +245,7 @@ def count(is_static=False):
     :return: count
     """
     session = _session()
-    # could be replaced by session.query(sqlalchemy.func.count(Url).scalar()
+    # could be replaced by session.query(sqlalchemy.func.count(Url).scalar())
     count = session.query(Url).filter(Url.is_static == is_static).count()
     session.close()
     return count

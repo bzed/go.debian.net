@@ -179,8 +179,9 @@ class DatabaseConfig(ConfigSection):
     SQLalchemy database configurations
     debug : True initiates SQLalchemy in verbose debug mode
     connection : <sqlengine>://<db_name>
+    Default is sqlite,
     """
-    connection = 'postgresql:///godebian'
+    connection = 'sqlite:///godebian.db'
     debug = False
 
 

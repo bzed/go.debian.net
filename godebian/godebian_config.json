@@ -1,6 +1,6 @@
 {
     "database" : {
-        "debug": true,
+        "debug": false,
         "connection": "sqlite:///godebian.db"
     },
 

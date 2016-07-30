@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+import sys
+import traceback
 __author__ = "Bernd Zeimetz"
 __contact__ = "bzed@debian.org"
 __license__ = """
@@ -34,9 +36,6 @@ try:
 except ImportError:
     from flask import json
 
-import sys
-import traceback
-
 _JSONMETHODS = {}
 
 
@@ -61,7 +60,8 @@ def jsondispatch(data):
     except SyntaxError:
         print("SyntaxError in data: %s" % (data,))
         return None
-    except ValueError:
+    except ValueError as e:
+        print(e)
         print("ValueError in data: %s" % (data,))
         return None
     id = rawdata.get('id', 0)
@@ -77,13 +77,11 @@ def jsondispatch(data):
     params = rawdata.get('params', [])
 
     # handler = _JSONMETHODS.get(method, None)
+    # print(method)
     handler = _JSONMETHODS.get(method)
     if not handler:
         ret_dict['error'] = 'unknown method'
         return json.dumps(ret_dict)
-
-    # todo:
-    # fix calling function explicitly.
 
     try:
         ret_dict['result'] = handler(*params)

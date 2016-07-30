@@ -34,6 +34,7 @@ from .config import UrlencoderConfig
 from . import db
 import sys
 import re
+from .special_filter import post_filter
 
 if sys.version_info > (3, 0):
     import urllib.parse as urlparse
@@ -179,7 +180,7 @@ def get_url(key):
             return None
         return url
     id = decode_url(key)
-    url = db.get_url(id)
+    url = post_filter(db.get_url(id))
     if url:
         MemCache.set(key, url)
         return url

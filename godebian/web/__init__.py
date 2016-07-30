@@ -247,12 +247,6 @@ def show_errormessage(error):
 def _assign_errorhandler(i):
     app.error_handlers[i] = show_errormessage
 
-"""
-todo: status Fixed
-old code
-map(_assign_errorhandler,
-    werkzeug.exceptions.default_exceptions.iterkeys())
-"""
 for c in werkzeug.exceptions.default_exceptions:
     _assign_errorhandler(c)
 del _assign_errorhandler
