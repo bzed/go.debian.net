@@ -35,9 +35,4 @@ mapper(Url, _urltable)
 _metadata.bind = engine
 _metadata.create_all()
 
-
-seq = Sequence(_URL_ID_SEQ)
-id = engine.execute(seq)
-print(engine.execute(seq.next_value()))
-seq.next_value()
-
+from web import app

@@ -169,11 +169,12 @@ def add_url(url, static_id=None, log=None):
             _abort_session(session)
             return id_query[0][0]
 
-        id = session.execute("""select nextval('%s');""" % (_URL_ID_SEQ,)).fetchone()[0]
+        id = int(session.query(_urltable.pk).count()) + 1
+        #id = session.execute("""select nextval('%s');""" % (_URL_ID_SEQ,)).fetchone()[0]
         # Perform Shared/Read LOCK on Table
         session.execute("""LOCK TABLE %s in SHARE MODE""" % (_URL_TABLE,))
         while session.query(Url.id).filter(Url.id == id)[:1]:
-            id = session.execute("""select nextval('%s');""" % (_URL_ID_SEQ,)).fetchone()[0]
+            id = int(session.query(_urltable.pk).count()) + 1
         _add_url_to_session(session, url, id, False, log)
 
     else:
