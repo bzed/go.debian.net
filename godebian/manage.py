@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+
+from .urlencoder import encode_url, decode_url
+from .cache import mem_cache as MemCache
+from .config import UrlencoderConfig
+from . import db
+import sys
+import re
+from .special_filter import post_filter
+
 __author__ = "Bernd Zeimetz"
 __contact__ = "bzed@debian.org"
 __license__ = """
@@ -27,14 +36,6 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
-
-from .urlencoder import encode_url, decode_url
-from .cache import mem_cache as MemCache
-from .config import UrlencoderConfig
-from . import db
-import sys
-import re
-from .special_filter import post_filter
 
 if sys.version_info > (3, 0):
     import urllib.parse as urlparse

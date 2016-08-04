@@ -1,17 +1,10 @@
 from __future__ import print_function
-from functools import wraps
+import requests
+import json
+import unittest
 
 __author__ = 'Harsh Daftary'
 _host = "http://127.0.0.1:5000/"
-
-try:
-    import requests
-    import json
-    import inspect
-
-except ImportError as e:
-    print(e)
-    exit(1)
 
 
 class ApiError(Exception):
@@ -27,26 +20,25 @@ class GoDebianApi(object):
         json api url is deb.li/rpc/json
 
         if you want to change it then subclass this class and override __init__ to make your changes.
-
         :return None
         """
         self.api_url = _host + "rpc/json"
         self.host = host
-        self.preview = host + "p/%s"
         self.headers = {'Content-type': 'application/json'}
 
-    def dispatch_req(self,method, *args, **kwargs):
+    def dispatch_req(self, method, *args, **kwargs):
         data = {'method': method, 'params': args, 'id': "jsonrpc"}
-        print(data)
+        # print(data)
         r = requests.post(self.api_url, headers=self.headers, data=json.dumps(data))
         # print(r.status_code)
 
         if r.status_code == 200:
             resp = r.json()
-            print(resp)
+            # print(resp)
             if resp.get('result', False):
                 return resp.get('result')
             else:
+                # print(resp)
                 raise ApiError(resp.get('error', "Some error occurred"))
         else:
             raise ApiError(
@@ -58,7 +50,7 @@ class GoDebianApi(object):
                     repeated URLs don't get different Keys.
         :return str: shortened URL
         """
-        pass
+        return self.dispatch_req("add_url", url)
 
     def get_url(self, key):
         """
@@ -66,7 +58,7 @@ class GoDebianApi(object):
         Get key from following format : http://deb.li/p/<key>
         :return str: URL associated
         """
-        pass
+        return self.dispatch_req("get_url", key)
 
     def add_static_url(self, url, keyword):
         """
@@ -75,33 +67,55 @@ class GoDebianApi(object):
         example : go.debian.net/<keyword>
         :return:
         """
-        pass
+        return self.dispatch_req("add_static_url", url, keyword)
 
 
-urls = ["www.debian.net", "www.gmail.com", "www.facebook.com"]
-static_urls = [dict(url="http://www.debian.org", id="debian23")]
+def dependency_check():
+    try:
+        import sqlalchemy
+        import memcache
+        import psycopg2
+        import flask
+        import IPy
+        import json
+        import requests
+        import inspect
+        return True
+    except Exception as e:
+        print(e)
+        return False
 
 
-class BaseTest(object):
+class BaseTest(unittest.TestCase):
+    urls = ["http://www.debian.net", "http://www.gmail.com", "http://www.facebook.com"]
+    percent_encoded_url = ["http://www.example.com/?q=foo%2Bbar", "http://www.example2.com/?q=foo+bar"]
+    static_urls = [dict(url="http://www.debian.org", keyword="somekey")]
+
     api = GoDebianApi()
 
+    def test_dependencies(self):
+        self.assertTrue(dependency_check(), msg="Dependencies not satisfied")
+
     def test_non_static_urls(self):
-        for i in urls:
-            key = self.api.add_url(url=i)
-            url = self.api.get_url(key=key)
-            assert url == i, "Error"
+        for i in self.urls:
+            self.assertEqual(i,self.api.get_url(key=self.api.add_url(url=i)), msg="Problem in adding & getting URL API")
 
     def test_static_urls(self):
-        for i in static_urls:
-            self.api.add_static_url(url=i["url"], keyword=i["id"])
-            url = self.api.get_url(key=i["id"])
-            assert url == i["url"], "Error"
+        for i in self.static_urls:
+            self.api.add_static_url(url=i["url"], keyword=i["keyword"])
+            self.assertEqual(i["url"],self.api.get_url(key=i["keyword"]),msg="Problem in STATIC URL API")
 
+    def test_percent_encoded_urls(self):
+        for i in self.percent_encoded_url:
+            self.assertEqual(i,self.api.get_url(key=self.api.add_url(url=i)), msg="Problem in PERCENT ENCODED URL API")
 
 if __name__ == '__main__':
-    a = GoDebianApi()
-    b = a.add_url(url=urls[0])
-    print(b)
-    # test = BaseTest()
-    # test.test_static_urls()
-    # test.test_non_static_urls()
+    """
+    Basic output of tests
+    ....
+    ----------------------------------------------------------------------
+    Ran 4 tests in 1.443s
+
+    OK
+    """
+    unittest.main()

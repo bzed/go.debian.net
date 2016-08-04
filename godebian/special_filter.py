@@ -1,10 +1,12 @@
 from __future__ import print_function
 
-# key,value = char, char to be replaced
+# key,value = char to be replaced, char to be replaced with
 _special_chars = {"%2B": "XXYYZZ"}
 
 
 def pre_filter(url):
+    if not url:
+        return url
     url = url.encode('utf-8')
     assert type(url) is str, "Url must be string"
     for key, value in _special_chars.items():
@@ -14,6 +16,8 @@ def pre_filter(url):
 
 
 def post_filter(url):
+    if not url:
+        return url
     url = url.encode('utf-8')
     assert type(url) is str, "url must be string"
     for key, value in _special_chars.items():
@@ -23,6 +27,7 @@ def post_filter(url):
 
 
 def special_filter_test(urls=[]):
+    # special_filter_test(urls=["http://www.example.com/?q=foo%2Bbar"])
     for url in urls:
         resp = pre_filter(url=url)
         print(resp)
@@ -31,6 +36,4 @@ def special_filter_test(urls=[]):
 
 
 if __name__ == '__main__':
-    special_filter_test(urls=[
-        "http://www.example.com/?q=foo%2Bbar"
-    ])
+    pass

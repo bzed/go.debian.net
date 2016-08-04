@@ -116,7 +116,6 @@ class DbIdOutOfRangeException(DbException):
 
 def get_url(id):
     """
-
     :param id: id of shortened URL
     :return: None or URL
     """

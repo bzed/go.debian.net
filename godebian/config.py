@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
+import os
+import re
+import IPy
+import json
+
+
 __author__ = "Bernd Zeimetz"
 __contact__ = "bzed@debian.org"
 __license__ = """
@@ -29,14 +35,9 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
-import os
-import re
-import IPy
-import json
 
-
-# python3 TYPE fix
 class _C:
+    # python3 TYPE fix
     def _m(self): pass
 ClassType = type(_C)
 TypeType = type
