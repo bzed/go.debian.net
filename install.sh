@@ -30,7 +30,7 @@ apt-get install python-memcache -y
 
 function common {
 echo "updating apt-get"
-apt-get update
+apt-get -qq update
 
 #git is required to fetch code from github repository
 echo "Installing git command line tool"
@@ -40,10 +40,6 @@ apt-get install git -y
 echo "Installing postgresql and related packages"
 apt-get install postgresql postgresql-contrib -y
 
-#Get the code
-echo "Fetching code from github"
-git clone https://github.com/ninjatrench/go.debian.net
-cd go.debian.net/godebian
 #use pip install only if apt-get fails
 #pip install -r requirements.txt
 }
@@ -51,11 +47,9 @@ cd go.debian.net/godebian
 function main {
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
-   echo "This script must be run as root" 1>&2
+   echo "This script must be run as root"
    exit 1
 fi
-
-main
 
 echo "Preparing installation"
 common
@@ -68,5 +62,7 @@ else
 echo "Performing Installation for python2"
 python2
 fi
+exit 0
 }
 
+main
