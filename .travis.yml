@@ -7,8 +7,8 @@ python:
   - "3.4"
 
 install:
-  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then ./install.sh; fi
-  - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; then ./install.sh python3; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then sudo ./install.sh; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; then sudo ./install.sh python3; fi
 
 script:
   - python godebian-server.py
