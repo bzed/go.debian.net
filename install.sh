@@ -20,10 +20,10 @@ function python2 {
 
 apt-get install python-pip -y
 
+apt-get install python-ipy -y
 apt-get install python-requests -y
 apt-get install python-psycopg2 -y
 apt-get install python-flask -y
-apt-get install python-ipy -y
 apt-get install python-sqlalchemy -y
 apt-get install python-memcache -y
 }
