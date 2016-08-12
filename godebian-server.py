@@ -30,7 +30,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 
-import sys
+import sys,os
+sys.path.append(os.getcwd())
 
 try:
     from godebian.web import app

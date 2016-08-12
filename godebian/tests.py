@@ -79,6 +79,7 @@ def dependency_check():
         import IPy
         import json
         import requests
+        import sqlite3
         import inspect
         return True
     except Exception as e:
@@ -87,8 +88,40 @@ def dependency_check():
 
 
 class BaseTest(unittest.TestCase):
-    urls = ["http://www.debian.net", "http://www.gmail.com", "http://www.facebook.com"]
-    percent_encoded_url = ["http://www.example.com/?q=foo%2Bbar", "http://www.example2.com/?q=foo+bar"]
+    urls = ["http://www.debian.net",
+            "http://www.gmail.com",
+            "http://www.facebook.com",
+            "http://999fitness.com",
+            "http://a.update.51edm.net",
+            "http://ab.usageload32.com",
+            "http://abcdespanol.com",
+            "http://above.e - rezerwacje24.pl",
+            "http://absurdity.flarelight.com",
+            "http://achren.org",
+            "http://acool.csheaven.com",
+            "http://ad - beast.com",
+            "http://adgallery.whitehousedrugpolicy.gov",
+            "http://adlock. in",
+            "http://adobeflashupdate14.com",
+            "http://ads.wikipartes.com",
+            "http://adserving.favorit-network.com",
+            "http://adv.riza.it",
+            "http://advancetec.co.uk",
+            "http://afa15.com.ne.kr",
+            "http://agsteier.com",
+            "http://aintdoinshit.com",
+            "http://aippnetworks.com",
+            "http://aircraft.evote.cl",
+            "http://ajewishgift.com",
+            "http://akirkpatrick.com",
+            ]
+    percent_encoded_url = ["http://www.example.com/?q=foo%2Bbar",
+                           "http://www.example2.com/?q=foo+bar",
+                           'http://1.1.1.6/@#/index.htm',
+                           'http://1.1.1.6/@#/dsds/index?$/user=2121l',
+                           'http://1.1.1.5/?foo=index.htm&sda=12&dsdsd/asdsd/url',
+                           'http://1.1.1.5/?&sda=12&dsdsd/asdsd/url'
+                           ]
     static_urls = [dict(url="http://www.debian.org", keyword="somekey")]
 
     api = GoDebianApi()
