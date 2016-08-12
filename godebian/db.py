@@ -35,7 +35,7 @@ from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, 
     Sequence, Boolean, and_, func, DateTime, Text
 from sqlalchemy.orm import mapper, sessionmaker
 from sqlalchemy.exc import IntegrityError, DataError
-from special_filter import pre_filter
+from .special_filter import pre_filter
 
 from .config import DatabaseConfig
 
