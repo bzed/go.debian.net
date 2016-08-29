@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import memcache
+from .config import MemcachedConfig
+
 __author__ = "Bernd Zeimetz"
 __contact__ = "bzed@debian.org"
 __license__ = """
@@ -28,28 +31,25 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from .config import MemcachedConfig
-
 # pylibmc seems to be buggy, for whatever reason - since libmemcached5
-#try:
+# try:
 #    import pylibmc as memcache
-#except ImportError:
-
-import memcache
+# except ImportError:
 
 _servers = MemcachedConfig.servers.split(';')
 _timeout = MemcachedConfig.timeout
 _prefix = MemcachedConfig.prefix
 
 if _servers[0].lower() != 'nullcache':
-    from  werkzeug.contrib.cache import MemcachedCache
+    from werkzeug.contrib.cache import MemcachedCache
+
     _client = memcache.Client(_servers)
-    MemCache = MemcachedCache(_client,
-                          default_timeout=_timeout,
-                          key_prefix=_prefix)
+    mem_cache = MemcachedCache(_client,
+                               default_timeout=_timeout,
+                               key_prefix=_prefix)
 else:
-    from  werkzeug.contrib.cache import NullCache
-    MemCache = NullCache()
+    from werkzeug.contrib.cache import NullCache
 
-__all__ = ["MemCache"]
+    mem_cache = NullCache()
 
+__all__ = ["mem_cache"]

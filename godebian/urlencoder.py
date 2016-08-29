@@ -29,70 +29,104 @@ OTHER DEALINGS IN THE SOFTWARE.
 """
 
 from .config import UrlencoderConfig
+import sys
+
 DEFAULT_ALPHABET = UrlencoderConfig.alphabet
 DEFAULT_BLOCK_SIZE = UrlencoderConfig.blocksize
 
+
 class UrlEncoder(object):
+    """
+    UrlEncoder class is used for encoding and decoding of URL
+    todo:
+    Make encode and decode as static methods
+    """
+
     def __init__(self, alphabet=DEFAULT_ALPHABET, block_size=DEFAULT_BLOCK_SIZE):
         self.alphabet = alphabet
         self.block_size = block_size
         self.mask = (1 << block_size) - 1
-        self.mapping = range(block_size)
+
+        if sys.version_info > (3, 0):
+            # Python 3 code in this block
+            self.mapping = list(range(block_size))
+        else:
+            # Python 2 code in this block
+            self.mapping = range(block_size)
         self.mapping.reverse()
+
     def encode_url(self, n, min_length=0):
         return self.enbase(self.encode(n), min_length)
+
     def decode_url(self, n):
         return self.decode(self.debase(n))
+
     def encode(self, n):
         return (n & ~self.mask) | self._encode(n & self.mask)
+
     def _encode(self, n):
         result = 0
         for i, b in enumerate(self.mapping):
             if n & (1 << i):
                 result |= (1 << b)
         return result
+
     def decode(self, n):
         return (n & ~self.mask) | self._decode(n & self.mask)
+
     def _decode(self, n):
         result = 0
         for i, b in enumerate(self.mapping):
             if n & (1 << b):
                 result |= (1 << i)
         return result
+
     def enbase(self, x, min_length=0):
         result = self._enbase(x)
         padding = self.alphabet[0] * (min_length - len(result))
         return '%s%s' % (padding, result)
+
     def _enbase(self, x):
         n = len(self.alphabet)
         if x < n:
             return self.alphabet[x]
-        return self.enbase(x/n) + self.alphabet[x%n]
+        return self.enbase(x / n) + self.alphabet[x % n]
+
     def debase(self, x):
+        """
+         Performs dbase operation
+         contents of  x should be reversed before enumerating
+        :return: result
+        """
         n = len(self.alphabet)
         result = 0
         for i, c in enumerate(reversed(x)):
-            result += self.alphabet.index(c) * (n**i)
+            result += self.alphabet.index(c) * (n ** i)
         return result
-        
+
+
 DEFAULT_ENCODER = UrlEncoder()
+
 
 def encode(n):
     return DEFAULT_ENCODER.encode(n)
-    
+
+
 def decode(n):
     return DEFAULT_ENCODER.decode(n)
-    
+
+
 def enbase(n, min_length=0):
     return DEFAULT_ENCODER.enbase(n, min_length)
-    
+
+
 def debase(n):
     return DEFAULT_ENCODER.debase(n)
-    
+
+
 def encode_url(n, min_length=0):
     return DEFAULT_ENCODER.encode_url(n, min_length)
-    
+
+
 def decode_url(n):
     return DEFAULT_ENCODER.decode_url(n)
-
-

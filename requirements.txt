@@ -1,0 +1,5 @@
+sqlalchemy
+python-memcached
+psycopg2
+flask
+IPy

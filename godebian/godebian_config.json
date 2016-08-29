@@ -1,0 +1,27 @@
+{
+    "database" : {
+        "debug": false,
+        "connection": "sqlite:///godebian.db"
+    },
+
+    "urlencoder" : {
+        "blocksize": 25,
+        "alphabet": "1qw2ert3yuio4pQWER5TYUIOP6asdfghj7klASDFG8HJKLzxcv9bnmZXCVBN0M"
+    },
+
+    "memcached" :{
+        "prefix": "godebian",
+        "timeout": 600,
+        "servers": "1127.0.0.1:11211"
+    },
+
+    "flask" : {
+        "debug": false,
+        "allowed_rpc_ips": [
+                "127.0.0.1",
+                "::1",
+                "192.168.100.0/24"
+            ]
+    }
+
+}
