@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+import sys
 
 __author__ = "Bernd Zeimetz"
 __contact__ = "bzed@debian.org"
@@ -30,10 +32,9 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-import sys
 
 def config():
-    print """graph_args --base 1000 -l 0 --vertical-label URLs
+    print("""graph_args --base 1000 -l 0 --vertical-label URLs
 graph_title deb.li usage
 graph_category deb.li
 graph_info This graphs shows statistics of the number of URLs stored in deb.li.
@@ -43,17 +44,17 @@ custom.label custom ShortURLs
 dynamic.draw AREA
 custom.draw STACK
 dynamic.info ShortURLs which were automatically generated while inserting a new URL.
-custom.info Custom ShortURL which was assigned on request."""
+custom.info Custom ShortURL which was assigned on request.""")
+
 
 def stats():
     from godebian.manage import count
-    print "dynamic.value %s\ncustom.value %s" \
-            %(str(count(is_static=False)), str(count(is_static=True)))
+    print("dynamic.value %s\ncustom.value %s" % (str(count(is_static=False)), str(count(is_static=True))))
+
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        if sys.argv[1] == 'config':
-            config()
+    if len(sys.argv) > 1 and sys.argv[1] == "config":
+        # if sys.argv[1] == 'config':
+        config()
     else:
         stats()
-

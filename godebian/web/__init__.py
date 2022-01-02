@@ -42,11 +42,11 @@ except ImportError:
 
 import werkzeug
 
-
 app = flask.Flask(__name__)
 __all__ = ["app"]
 app.debug = FlaskConfig.debug
 app.request_class.max_content_length = FlaskConfig.max_content_length
+
 
 class RegexConverter(werkzeug.routing.BaseConverter):
     """ This converter accepts regular expressions to match URLs.
@@ -58,20 +58,39 @@ class RegexConverter(werkzeug.routing.BaseConverter):
     :param regexp: regular expression to match. Will be passed to
                     the converter's self.regexp as it is.
     """
+
     def __init__(self, map, regex):
         werkzeug.routing.BaseConverter.__init__(self, map)
         self.regex = regex
+
+
 app.url_map.converters['re'] = RegexConverter
 
+
 class ShortUrlConverter(RegexConverter):
+    """
+    Subclass of RegexConverter
+    Override __init__ with as per required regex string
+    """
     def __init__(self, map):
         regex = '[' + UrlencoderConfig.alphabet + ']+'
         RegexConverter.__init__(self, map, regex)
+
+
 app.url_map.converters['shorturl'] = ShortUrlConverter
 
 
 class RawRequest(flask.Request):
+    """
+    Inherited from flask.Request class
+    Low level request handling performed here
+    by linking app.request class context to RawRequest class
+    """
     def _load_form_data(self):
+        """
+        Load form data from raw_request
+        :return: None
+        """
         if not self.use_raw_stream:
             return werkzeug.Request._load_form_data()
 
@@ -93,29 +112,42 @@ class RawRequest(flask.Request):
         data = (stream, cls(), cls())
         d = self.__dict__
         d['stream'], d['form'], d['files'] = data
+
+
 app.request_class = RawRequest
 
 
 def _check_access(ip):
+    """
+    Verifies if request IP is allowed to access JSON-RPC API
+    :param ip: ip_address of requesting system
+    :return: True or False based on boolean logic
+    """
     for allowed_ip in FlaskConfig.allowed_rpc_ips:
         if ip in allowed_ip:
             return True
     return False
 
+
 __robots_txt = """User-agent: *
 Allow: /
 """
+
+
 @app.route('/robots.txt')
 def robots_txt():
     return app.response_class(__robots_txt, mimetype='text/plain')
 
 
-__indexopts = { 'title' : 'Welcome!' }
+__indexopts = {'title': 'Welcome!'}
 if FlaskConfig.google_site_verification:
     __indexopts['google_site_verification'] = FlaskConfig.google_site_verification
+
+
 @app.route('/')
 def index():
     return flask.render_template('index.html', **__indexopts)
+
 
 @app.route('/imprint.html')
 def imprint():
@@ -130,25 +162,28 @@ def redirect_by_key(key):
     else:
         return flask.abort(404)
 
+
 @app.route('/p/<shorturl:key>')
 def redirect_by_key_with_preview(key):
     url = get_url(key)
     if not url:
         return flask.abort(404)
     return flask.render_template('redirect-preview.html',
-        domain=FlaskConfig.domain,
-        key=key,
-        url=url, url_quoted=urllib.quote(url, safe="%/:=&?~#+!$,;'@()*[]"))
+                                 domain=FlaskConfig.domain,
+                                 key=key,
+                                 url=url, url_quoted=urllib.quote(url, safe="%/:=&?~#+!$,;'@()*[]"))
+
 
 @app.route('/<re(regex=r".+@.+"):msgid>')
 def redirect_to_lists_debian_org(msgid):
-    return flask.redirect('https://lists.debian.org/msgid-search/%s' %(msgid, ), code=301)
+    return flask.redirect('https://lists.debian.org/msgid-search/%s' % (msgid,), code=301)
+
 
 @app.route('/stats.html')
 def statistics():
     return flask.render_template('statistics.html',
-        static_urls=count(is_static=True),
-        non_static_urls=count(is_static=False))
+                                 static_urls=count(is_static=True),
+                                 non_static_urls=count(is_static=False))
 
 
 def __remote_address__():
@@ -162,28 +197,38 @@ def __remote_address__():
             remote_address = flask.request.remote_addr
     return remote_address
 
+
 @app.route('/rpc/json', methods=['POST'])
 def rpc_json():
+    """
+    JSON-RPC handler URL
+    :return: json in HTTP response
+    """
     remote_address = __remote_address__()
     if not _check_access(remote_address):
         return flask.abort(401)
     flask.request.use_raw_stream = True
     result = jsondispatch(flask.request.data)
-    if result == None:
+    # if result == None:
+    if not result:
         return flask.abort(400)
     return flask.jsonify(**result)
+
 
 @jsonmethod('add_url')
 def json_add_url(url):
     return add_url(url, log=__remote_address__())
 
+
 @jsonmethod('add_static_url')
 def json_add_static_url(url, key):
     return add_static_url(url, key, log=__remote_address__())
 
+
 @jsonmethod('update_static_url')
 def json_update_static_url(url, key):
     return update_static_url(url, key, log=__remote_address__())
+
 
 @jsonmethod('get_url')
 def json_get_url(key):
@@ -191,16 +236,17 @@ def json_get_url(key):
 
 
 def show_errormessage(error):
-    template_data = { 
-        'code' : error.code,
-        'name' : error.name,
-        'description' : error.get_description(flask.request.environ)
+    template_data = {
+        'code': error.code,
+        'name': error.name,
+        'description': error.get_description(flask.request.environ)
     }
     return flask.render_template('error.html', **template_data), error.code
 
+
 def _assign_errorhandler(i):
     app.error_handlers[i] = show_errormessage
-map(_assign_errorhandler,
-    werkzeug.exceptions.default_exceptions.iterkeys())
-del _assign_errorhandler
 
+for c in werkzeug.exceptions.default_exceptions:
+    _assign_errorhandler(c)
+del _assign_errorhandler

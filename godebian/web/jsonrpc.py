@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
+import sys
+import traceback
 __author__ = "Bernd Zeimetz"
 __contact__ = "bzed@debian.org"
 __license__ = """
@@ -33,46 +36,58 @@ try:
 except ImportError:
     from flask import json
 
-import sys
-import traceback
-
 _JSONMETHODS = {}
+
 
 def jsonmethod(methodname):
     def wrapper(handler):
         _JSONMETHODS[methodname] = handler
+
     return wrapper
 
+
 def jsondispatch(data):
+    """
+    Dispatch JSON-RPC mapped function based on method name provided in request body
+    parse method and parameters to that method
+    :param data: dict
+    Todo:
+    Error handling done for parsing request data
+    :return: response for flask request life cycle
+    """
     try:
         rawdata = json.loads(data)
     except SyntaxError:
-        print "SyntaxError in data: %s" %(data, )
+        print("SyntaxError in data: %s" % (data,))
         return None
-    except ValueError:
-        print "ValueError in data: %s" %(data, )
+    except ValueError as e:
+        print(e)
+        print("ValueError in data: %s" % (data,))
         return None
     id = rawdata.get('id', 0)
-    retDict = { 'id' : id , 'error' : None }
+    ret_dict = {'id': id, 'error': None}
 
-    method = rawdata.get('method', None)
+    # method = rawdata.get('method', None)
+    method = rawdata.get('method')
+    print(rawdata)
     if not method:
-        retDict['error'] = 'method missing in request'
-        return json.dumps(retDict)
+        ret_dict['error'] = 'method missing in request'
+        return json.dumps(ret_dict)
 
     params = rawdata.get('params', [])
 
-    handler = _JSONMETHODS.get(method, None)
+    # handler = _JSONMETHODS.get(method, None)
+    # print(method)
+    handler = _JSONMETHODS.get(method)
     if not handler:
-        retDict['error'] = 'unknown method'
-        return json.dumps(retDict)
+        ret_dict['error'] = 'unknown method'
+        return json.dumps(ret_dict)
 
     try:
-        retDict['result'] = handler(*params)
+        ret_dict['result'] = handler(*params)
     except:
         traceback.print_exc(file=sys.stdout)
-        retDict['result'] = None
-        retDict['error'] = "%s:%s" % (sys.exc_type, sys.exc_value)
+        ret_dict['result'] = None
+        ret_dict['error'] = "%s:%s" % (sys.exc_type, sys.exc_value)
     finally:
-        return retDict
-
+        return ret_dict
